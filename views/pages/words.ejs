@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Word</title>
+  <% include ../partials/head %>
+</head>
+<body>
+  <header>
+    <% include ../partials/header %>
+  </header>
+Trang quản lí dữ liệu từ
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Content</th>
+        <th>Meaning</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% words.forEach(function(word) { %>
+      <tr>
+      	<td><%= word.content %></td>
+      	<td><%= word.meaning %></td>
+      	<td><a href="/words/delete/<%= word._id %>"><span class="glyphicon glyphicon-trash"></a>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</body>
+</html>

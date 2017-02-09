@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Word</title>
+  <% include ../partials/head %>
+</head>
+<body>
+  <header>
+    <% include ../partials/header %>
+  </header>
+Trang quản lí người dùng
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% users.forEach(function(user) { %>
+      <tr>
+      	<td><%= user.email %></td>
+      	<td><%= user.name %></td>
+      	<td><a href="/users/api/delete/<%= user._id %>"><span class="glyphicon glyphicon-trash"></a>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</body>
+</html>
