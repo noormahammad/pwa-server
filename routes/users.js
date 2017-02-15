@@ -50,6 +50,41 @@ router.get('/api/:email', function(req, res) {
 			res.json(user);
 		}
 	})
+});
+
+
+//find users has email container input
+router.get('/search/:input', function(req, res) {
+	User.find({ $or: [{
+		email: new RegExp(req.params.input, "i")
+	},
+	{
+		name: new RegExp(req.params.input, "i")
+	} ]})
+	.exec(function(err, users) {
+		if(err) {
+			console.log('not found');
+			res.json(null);
+		} else {
+			console.log(users);
+			res.json(users);
+		}
+	})
+});
+
+router.get('/testapi', function(req, res) {
+	User.findOne({
+		email: 'trang2uet@gmail.com'
+	})
+	.exec(function(err, user) {
+		if(err) {
+			console.log('not found');
+			res.json(null);
+		} else {
+			console.log(user);
+			res.json(user);
+		}
+	})
 })
 
 
@@ -57,29 +92,31 @@ router.get('/api/friend/:id', function(req, res) {
 	User.findOne({
 		_id: req.params.id
 	})
+	.populate('list_friend')
 	.exec(function(err, user) {
 		if(err) {
 			res.send('error occured');
 		} else {
-			// var list = [];
-			// for (var i = 0; i < user.list_friend.length; i++) {
-			// 	User.findOne({
-			// 		_id: user.list_friend[i]
-			// 	})
-			// 	.exec(function(err, user) {
-			// 		if(err) {
-			// 			res.send(err);
-			// 		} else {
-			// 			list.push(user);
-			// 			if (i == user.list_friend.length - 1) res.json(list);
-			// 		}
-			// 	})
-
-			// }
+			console.log('friend'+ user.list_friend);
 			res.send(user.list_friend);
 		}
 	})
 })
+
+
+router.get('/findfriend/:email', function(req, res) {
+	User.findOne({
+		email: req.params.email
+	})
+	.populate('list_friend')
+	.exec(function(err, user) {
+		if(err) {
+			res.send('error occured');
+		} else {
+			res.send(user['list_friend']);
+		}
+	})
+});
 
 
 router.get('/api/delete/:id', function(req, res) {
@@ -92,5 +129,33 @@ router.get('/api/delete/:id', function(req, res) {
 			res.redirect('/users');
 		}
 	});
+});
+
+router.get('/api/addfriend/test', function(req, res) {
+	User.findOne({
+		email: 'killalltolive@gmail.com'
+	})
+	.exec(function(err, user) {
+		if(err) {
+			console.log('not found');
+			res.json(null);
+		} else {
+			//res.json(user);
+		
+			User.findOneAndUpdate({
+				email: 'trangjtwya@gmail.com'
+			}, 
+			{ $push: { list_friend: user._id}},
+			function (err, newUser) {
+				if(err) {
+					console.log('error occured');
+				} else {
+					//console.log(newWord);
+					res.send(newUser);
+				}
+			});
+		}
+	})
+		
 })
 module.exports = router;

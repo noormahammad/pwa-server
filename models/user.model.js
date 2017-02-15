@@ -5,7 +5,8 @@ var UserSchema = new Schema({
  	email: String,
  	name: String, 
  	password: String, 
- 	list_friend: Array
+ 	imageUrl: String,
+ 	list_friend: [{ type: String, ref: 'User' }]
 }, { collection: 'users' });
 
 module.exports = mongoose.model('User', UserSchema);
