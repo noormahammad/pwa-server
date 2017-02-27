@@ -46,6 +46,7 @@ router.get('/request/:id', function(req, res, next) {
 		});
 });
 
+
 //gửi yêu cầu kết bạn
 
 router.post('/create', function(req, res) {
@@ -60,7 +61,7 @@ router.post('/create', function(req, res) {
 
 
 //Chấp nhận là bạn bè
-router.get('/agree/:from/:to', function(req, res) {
+router.post('/agree/:from/:to', function(req, res) {
 	Friend.findOneAndUpdate({ $and: [
 			{ from: req.params.from }, 
 			{ to: req.params.to }
@@ -68,16 +69,21 @@ router.get('/agree/:from/:to', function(req, res) {
 	{ $set: { confirmed: true }},	function (err, friend) {
 		if(err) {
 			console.log('error occured');
+			res.send(err);
+			return;
 		} else {
 			console.log(friend);
-			//Thêm bạn vào danh sách
+
+			//Thêm bạn vào danh sách của to
 			User.findOne({
 				_id: req.params.to
 			}, 
 			function (err, user) {
 				if(err) {
 					console.log('error occured');
+					res.send(err);
 				} else {
+					// console.log(req.params.from);
 					//Kiểm tra id from có trong danh sách bạn bè chưa
 					if (user.list_friend.indexOf(req.params.from) < 0) {
 						user.list_friend.push(req.params.from);
@@ -85,12 +91,38 @@ router.get('/agree/:from/:to', function(req, res) {
 							if (err){
 								res.send(err);
 							}
-							res.send(user.list_friend);
+							//res.send(user.list_friend);
 						})
 					}
-					res.send(user.list_friend);
+					//res.send(user.list_friend);
 				}
 			});
+
+			// //Thêm vào của cả from
+
+			User.findOne({
+				_id: req.params.from
+			}, 
+			function (err, user) {
+				if(err) {
+					console.log('error occured');
+					res.send(err);
+				} else {
+					//Kiểm tra id from có trong danh sách bạn bè chưa
+					if (user.list_friend.indexOf(req.params.to) < 0) {
+						user.list_friend.push(req.params.to);
+						user.save(function(err) {
+							if (err){
+								res.send(err);
+							}
+							//res.send(user.list_friend);
+						})
+					}
+					//res.send(user.list_friend);
+				}
+			});
+
+
 		}
 	});
 });

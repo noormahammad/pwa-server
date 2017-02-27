@@ -9,6 +9,8 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var words = require('./routes/words');
 var friends = require('./routes/friends');
+var games = require('./routes/games');
+
 
 var app = express();
 
@@ -40,6 +42,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/words', words);
 app.use('/friends', friends);
+app.use('/api/games', games);
 
 
 // catch 404 and forward to error handler

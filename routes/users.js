@@ -37,6 +37,22 @@ router.post('/api/create', function(req, res) {
 	})
 });
 
+
+//edit information of user
+router.post('/edit/:email', function(req, res) {
+	User.findOneAndUpdate({
+		email: req.params.email
+	},
+	req.body, {new: true},
+	function (err, user) {
+		if(err) {
+			console.log('error occured');
+		} else {
+			res.send(user);
+		}
+	});
+});
+
 router.get('/api/:email', function(req, res) {
 	User.findOne({
 		email: req.params.email
@@ -71,21 +87,6 @@ router.get('/search/:input', function(req, res) {
 		}
 	})
 });
-
-router.get('/testapi', function(req, res) {
-	User.findOne({
-		email: 'trang2uet@gmail.com'
-	})
-	.exec(function(err, user) {
-		if(err) {
-			console.log('not found');
-			res.json(null);
-		} else {
-			console.log(user);
-			res.json(user);
-		}
-	})
-})
 
 
 router.get('/api/friend/:id', function(req, res) {

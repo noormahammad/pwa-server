@@ -45,6 +45,7 @@ router.get('/all', function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
+	var content = 'kajfdksd'
 	Word.findOne({
 		_id: req.params.id
 	})
@@ -52,6 +53,7 @@ router.get('/:id', function(req, res) {
 		if(err) {
 			res.send('error occured');
 		} else {
+			console.log(content);
 			console.log(word);
 			res.json(word);
 		}
