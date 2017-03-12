@@ -22,9 +22,10 @@ router.post('/create', function(req, res, next) {
 
 router.get('/request/:id', function(req, res, next) {
 	Game.find({
-		to: req.params.id
+		'to.id': req.params.id
 	})
-	.populate('from')
+	.populate('from.id')
+	.populate('to.id')
 	.exec( function(err, games) {
 		if (err) {
 			res.send(err);

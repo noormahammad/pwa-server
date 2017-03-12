@@ -14,9 +14,8 @@ router.get('/', function(req, res, next) {
     });
 });
 
-// Get all words
+// Get all users
 router.get('/all', function(req, res) {
-	console.log('searching...');
     // use mongoose to get all words in the database
     User.find(function(err, users) {
         // if there is an error retrieving, send the error. nothing after res.send(err) will execute
@@ -31,7 +30,6 @@ router.post('/api/create', function(req, res) {
 		if (err) {
 			res.send('error saving word');
 		} else {
-			console.log(user);
 			res.send(user);
 		}
 	})
@@ -46,7 +44,7 @@ router.post('/edit/:email', function(req, res) {
 	req.body, {new: true},
 	function (err, user) {
 		if(err) {
-			console.log('error occured');
+			res.send(err);
 		} else {
 			res.send(user);
 		}
@@ -59,10 +57,8 @@ router.get('/api/:email', function(req, res) {
 	})
 	.exec(function(err, user) {
 		if(err) {
-			console.log('not found');
 			res.json(null);
 		} else {
-			console.log(user);
 			res.json(user);
 		}
 	})
@@ -79,7 +75,6 @@ router.get('/search/:input', function(req, res) {
 	} ]})
 	.exec(function(err, users) {
 		if(err) {
-			console.log('not found');
 			res.json(null);
 		} else {
 			console.log(users);
@@ -98,7 +93,6 @@ router.get('/api/friend/:id', function(req, res) {
 		if(err) {
 			res.send('error occured');
 		} else {
-			console.log('friend'+ user.list_friend);
 			res.send(user.list_friend);
 		}
 	})
@@ -138,20 +132,16 @@ router.get('/api/addfriend/test', function(req, res) {
 	})
 	.exec(function(err, user) {
 		if(err) {
-			console.log('not found');
 			res.json(null);
 		} else {
-			//res.json(user);
-		
 			User.findOneAndUpdate({
 				email: 'trangjtwya@gmail.com'
 			}, 
 			{ $push: { list_friend: user._id}},
 			function (err, newUser) {
 				if(err) {
-					console.log('error occured');
+					res.send(err);
 				} else {
-					//console.log(newWord);
 					res.send(newUser);
 				}
 			});

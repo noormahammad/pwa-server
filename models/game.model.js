@@ -4,10 +4,16 @@ var Schema = mongoose.Schema;
 var User = require('../models/user.model.js');
 
 var GameSchema = new Schema({
- 	from: { type:  String, ref:'User' },
-  to:   { type: String, ref:'User' },
+ 	from: { 
+ 		id: { type: String, ref:'User'},
+ 		score: { type: Number, default: 0}
+ 	},
+  to: {
+  	id: { type: String, ref:'User'},
+ 		score: { type: Number, default: 0}
+ 	},
   played	: { type: Boolean, default: false },
-  content: {type: Array},
+  content: { type: Array },
   type: String,
 	created		: { type: Date, default: Date.now }
 }, { collection: 'games' });
