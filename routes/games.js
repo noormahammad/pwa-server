@@ -21,9 +21,11 @@ router.post('/create', function(req, res, next) {
 });
 
 router.get('/request/:id', function(req, res, next) {
-	Game.find({
+	Game.find({ $and: [{
 		'to.id': req.params.id
-	})
+	}, {
+		'played': false
+	}] })
 	.populate('from.id')
 	.populate('to.id')
 	.exec( function(err, games) {

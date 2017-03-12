@@ -14,6 +14,8 @@ var GameSchema = new Schema({
  	},
   played	: { type: Boolean, default: false },
   content: { type: Array },
+  fromAns: { type: Array },
+  toAns: { type: Array },
   type: String,
 	created		: { type: Date, default: Date.now }
 }, { collection: 'games' });
