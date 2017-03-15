@@ -10,9 +10,22 @@ var users = require('./routes/users');
 var words = require('./routes/words');
 var friends = require('./routes/friends');
 var games = require('./routes/games');
+var realtime = require('./routes/realtime');
 
 
 var app = express();
+var server = require('http').createServer(app);  
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('add-message', (message) => {
+    console.log(message);
+    io.emit('message', { type:'new-message', text: message});
+  })
+});
+
+//server.listen(5000);  
 
 var mongoose = require('mongoose');
 //var db = 'mongodb://trang2uet:pwa@ds049631.mlab.com:49631/pwa';
@@ -30,6 +43,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
@@ -38,11 +52,17 @@ app.use(function(req, res, next) {
    next();
 });
 
+app.use(function(req, res, next){
+  res.io = io;
+  next();
+});
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/words', words);
 app.use('/friends', friends);
 app.use('/api/games', games);
+app.use('/api/realtime', realtime);
 
 
 // catch 404 and forward to error handler
@@ -65,4 +85,4 @@ app.use(function(err, req, res, next) {
 
 
 
-module.exports = app;
+module.exports = {app: app, server: server};

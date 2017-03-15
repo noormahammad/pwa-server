@@ -20,6 +20,26 @@ router.post('/create', function(req, res, next) {
 	});
 });
 
+router.post('/update/:id', function(req, res, next) {
+	Game.findOneAndUpdate({
+		_id: req.params.id
+	}, 
+	{ $set: { 
+		'played': true,
+		'toAns': req.body.toAns,
+		'to.score': req.body.to.score
+			}
+	},
+	function (err, game) {
+		if(err) {
+			console.log('error occured');
+		} else {
+			res.send(game);
+		}
+	});
+	
+});
+
 router.get('/request/:id', function(req, res, next) {
 	Game.find({ $and: [{
 		'to.id': req.params.id
