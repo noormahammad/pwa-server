@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var db = require('../db.js');
 var User = require('../models/user.model.js');
+
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -32,7 +32,7 @@ router.post('/api/create', function(req, res) {
 		} else {
 			res.send(user);
 		}
-	})
+	});
 });
 
 
