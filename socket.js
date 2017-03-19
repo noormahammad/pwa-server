@@ -33,11 +33,52 @@ exports = module.exports = function(io){
 	  });
 
 	  socket.on('send-request', (request) => {
-	  	let fromSocketId = request.fromId;
-	  	let toSocketId = request.toId;
-	  	console.log(request);
+	  	//let fromSocketId = socket.id;
+	  	let toSocketId = request.toSocketId;
+	  	request['fromSocketId'] = socket.id;
+	  	//trạng thái đợi chấp thuận
+	  	io.to(socket.id).emit('wait-accept', "đang đợi đồng ý");
 	  	io.to(toSocketId).emit('send-request-response', request);
-	  })
+	  });
+
+	  //phản hồi lại yêu cầu gửi đến
+	  socket.on('send-response', (data) => {
+	  	//socket gửi phản hồi đến
+	  	let toSocketId = data['fromSocketId'];
+	  	//thông báo tới người gửi cần đợi chấp thuận
+	  	io.to(toSocketId).emit('receive-response', data);
+
+	  	if(data['agree']) {
+	  		helper.getContentGame(5, (err, content) => {
+	  			data1 = {
+	  				agree: true,
+	  				content: content,
+	  				from: data['from'],
+	  				to: data['to'],
+	  				playerSocketId: toSocketId
+	  			};
+
+	  			data2 = {
+	  				agree: true,
+	  				content: content,
+	  				from: data['from'],
+	  				to: data['to'],
+	  				playerSocketId: socket.id
+	  			}
+	  			io.to(socket.id).emit('begin-game', data1);
+			  	io.to(toSocketId).emit('begin-game', data2);
+  				
+			  });
+	  	}  
+	  });
+
+	  //gửi câu trả lời tạm thời là nếu đúng
+	  socket.on('send-answer', (data) => {
+	  	if (data['correct'] == true) {
+	  		io.to(data['playerSocketId']).emit('receive-answer', data);
+	  	}
+	  	//console.log(data);
+	  });
 
 	  socket.on('add-message', (message) => {
 	    console.log(message);
