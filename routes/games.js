@@ -10,11 +10,17 @@ router.get('/', function(req, res, next) {
   res.send('Games');
 });
 
+router.post('/test', function(req, res, next) {
+  res.send(req.body);
+});
+
+
 router.post('/create', function(req, res, next) {
 	Game.create(req.body, function(err, newGame) {
 		if (err) {
 			res.send(err);
 		} else {
+			console.log('game');
 			res.send(newGame);
 		}
 	});

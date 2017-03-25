@@ -77,7 +77,7 @@ router.get('/search/:input', function(req, res) {
 		if(err) {
 			res.json(null);
 		} else {
-			console.log(users);
+			//console.log(users);
 			res.json(users);
 		}
 	})

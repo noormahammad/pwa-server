@@ -1,6 +1,6 @@
 webpackJsonp([1,3],{
 
-/***/ 279:
+/***/ 286:
 /***/ function(module, exports) {
 
 /*
@@ -57,7 +57,7 @@ module.exports = function() {
 
 /***/ },
 
-/***/ 493:
+/***/ 522:
 /***/ function(module, exports) {
 
 /*
@@ -310,16 +310,16 @@ function updateLink(linkElement, obj) {
 
 /***/ },
 
-/***/ 496:
+/***/ 527:
 /***/ function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(830);
+var content = __webpack_require__(873);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(493)(content, {});
+var update = __webpack_require__(522)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -337,16 +337,16 @@ if(false) {
 
 /***/ },
 
-/***/ 497:
+/***/ 528:
 /***/ function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(831);
+var content = __webpack_require__(874);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(493)(content, {});
+var update = __webpack_require__(522)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -364,10 +364,10 @@ if(false) {
 
 /***/ },
 
-/***/ 829:
+/***/ 872:
 /***/ function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(279)();
+exports = module.exports = __webpack_require__(286)();
 // imports
 
 
@@ -379,10 +379,10 @@ exports.push([module.i, ".md-ripple-background,.md-ripple-foreground{background-
 
 /***/ },
 
-/***/ 830:
+/***/ 873:
 /***/ function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(279)();
+exports = module.exports = __webpack_require__(286)();
 // imports
 
 
@@ -394,29 +394,29 @@ exports.push([module.i, "/**\r\n * Applies styles for users in high contrast mod
 
 /***/ },
 
-/***/ 831:
+/***/ 874:
 /***/ function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(279)();
+exports = module.exports = __webpack_require__(286)();
 // imports
-exports.i(__webpack_require__(829), "");
+exports.i(__webpack_require__(872), "");
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\nbody {\n  margin: 0 !important;\n  font-family: Tahoma, Verdana, sans-serif;\n}\n\n.primary {\n\tcolor: #2196f3;\n}\n\n.bg-primary {\n\tbackground-color: #2196f3;\n}\n\n.text-center {\n\ttext-align: center;\n}\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\nbody {\n  margin: 0 !important;\n  font-family: Tahoma, Verdana, sans-serif;\n}\n\n.primary {\n\tcolor: #2196f3;\n}\n\n.bg-primary {\n\tbackground-color: #2196f3;\n}\n\n.text-center {\n\ttext-align: center;\n}\n\n.size14 {\n\tfont-size: 14px;\n}\n\n.caption {\n\tfont-size: 12px;\n}\n", ""]);
 
 // exports
 
 
 /***/ },
 
-/***/ 911:
+/***/ 980:
 /***/ function(module, exports, __webpack_require__) {
 
-__webpack_require__(497);
-module.exports = __webpack_require__(496);
+__webpack_require__(528);
+module.exports = __webpack_require__(527);
 
 
 /***/ }
 
-},[911]);
+},[980]);
 //# sourceMappingURL=styles.bundle.map

@@ -72,8 +72,6 @@ router.post('/agree/:from/:to', function(req, res) {
 			res.send(err);
 			return;
 		} else {
-			console.log(friend);
-
 			//Thêm bạn vào danh sách của to
 			User.findOne({
 				_id: req.params.to
@@ -138,9 +136,36 @@ router.get('/cancel/:user/:friend', function(req, res) {
 			if(err) {
 				console.log('error occured');
 			} else {
+
+				/* 
+				 * Delete in list friend of friend
+				*/
+				User.findOneAndUpdate({
+					_id: req.params.friend
+				}, 
+				{ $pull: { list_friend: req.params.user } },
+				function (err, friend) {
+					if(err) {
+						console.log('error occured');
+					}
+				});
 				res.json(user.list_friend);
 			}
-		})
-})
+	});
+});
+
+/* ignore yêu cầu */
+router.get('/ignore/:from/:to', function(req, res) {
+	Friend.remove({ $and: [
+			{ from: req.params.from }, 
+			{ to: req.params.to },
+			{ confirmed: false }
+		]}, function(err, friend) {
+			if(err) {
+				res.send(err);
+			}
+			res.json(friend);
+		});
+});
 
 module.exports = router; 

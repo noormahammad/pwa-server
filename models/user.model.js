@@ -8,6 +8,7 @@ var UserSchema = new Schema({
  	imageUrl: String,
  	list_friend: [{ type: String, ref: 'User' }],
  	online: { type: Boolean, default: false },
+ 	onApp: { type: Boolean, default: false },
  	socketId: String
 }, { collection: 'users' });
 

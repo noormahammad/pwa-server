@@ -18,8 +18,9 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
 var socketFile = require('./socket.js')(io);
+var port =  process.env.PORT || 3000;
 
-//server.listen(5000);  
+server.listen(port);  
 
 var mongoose = require('mongoose');
 //var db = 'mongodb://trang2uet:pwa@ds049631.mlab.com:49631/pwa';
@@ -32,6 +33,7 @@ app.engine('html',require('ejs').renderFile);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(require('express').static(require('path').join('dist')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

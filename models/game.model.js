@@ -13,7 +13,7 @@ var GameSchema = new Schema({
  		score: { type: Number, default: 0}
  	},
   played	: { type: Boolean, default: false },
-  content: { type: Array },
+  contentGame: { type: Array },
   fromAns: { type: Array },
   toAns: { type: Array },
   type: String,
