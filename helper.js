@@ -8,10 +8,16 @@ class Helper {
 		this.friend = require('./models/friend.model.js');
 		this.word = require('./models/word.model.js');
 		this.game = require('./models/game.model.js');
+		this.history = require('./models/history.model.js');
 	}
 
+/* 
+  * Method to get sum of online user
+  */
 	getContentGame(numQues, callback) {
-		this.word.find(function(err, allWords) {
+		this.word.find()
+		.limit(50)
+		.exec(function(err, allWords) {
       var content = [];
       var typeGames = ['reading'];
       
@@ -224,40 +230,8 @@ class Helper {
 		});
   }
 
-	// /*
-	//  * Method to accept request friend, have a new friend
-	//  */
-
-	// acceptRequest(fromId, toId, callback) {
-	// 	this.friend.findOneAndUpdate({ $and: [
-	// 		{ from: fromId }, 
-	// 		{ to: toId }
-	// 	]}, 
-	// 	{ $set: { confirmed: true }},(err, friend) => {
-	// 		//Thêm bạn vào danh sách bạn bè của to và from
-	// 		this.user.findOne({
-	// 			_id: toId
-	// 		}, (err, user) => {
-	// 				if (user.list_friend.indexOf(fromId) < 0) {
-	// 					user.list_friend.push(fromId);
-	// 					user.save(function(err) {});
-	// 				}
-	// 			}
-	// 		});
-
-	// 		this.user.findOne({
-	// 			_id: fromId
-	// 		}, (err, user) => {
-	// 			if (user.list_friend.indexOf(toId) < 0) {
-	// 				user.list_friend.push(toId);
-	// 				user.save(function(err) {});
-	// 			}
-	// 		});
-	// });
-	// }
-
 	/* 
-  * Method to accpet friend
+  * Method to accept friend
   */
 	acceptRequest(fromId, toId, callback) {
 		this.friend.findOneAndUpdate({ $and: [
@@ -284,8 +258,89 @@ class Helper {
 					});		
 				}
 			});
-
 		});
 	}
+
+	/* 
+  * Method to delete friendship request
+  */
+
+  deleteRequest(fromId, toId, callback) {
+  	this.friend.remove({ $and: [
+			{ from: fromId }, 
+			{ to: toId },
+			{ confirmed: false }
+		]}, function(err, friend) {
+			callback(err, friend);
+		});
+  }
+
+
+	/* 
+  * Method to get recent history
+  */
+
+  getHistory(userId, callback) {
+  	this.history.find({ $or: [
+			{ 'player1.id': userId }, 
+			{ 'player2.id': userId }
+		]})
+		.populate('player1.id')
+		.populate('player2.id')
+		.sort({created: -1})
+		.limit(5)
+		.exec(function(err, history) {
+			let result = [];
+			for(let i = 0; i < history.length; i++) {
+				let data = {};
+				if (history[i].player1['id']['_id'] == userId) {	
+					data['player1'] = history[i].player2;
+					data['player2'] = history[i].player1;
+				} else {
+					data = history[i];
+				}
+
+				result.push(data);
+			}
+			callback(err, result);
+		});
+  }
+
+  /* 
+   * Method to update result game to history collection when ending game
+   */
+
+  updateHistory(data, callback) {
+  	this.history.findOne({ $or: [
+  		{
+  			'player1.id': data.player1.id,
+  			'player2.id': data.player2.id
+  		}, {
+  			'player2.id': data.player1.id,
+  			'player1.id': data.player2.id
+  		}]
+  	}).exec((err, history) => {
+  		console.log(data.player1.id);
+  		console.log(history);
+  		if(history != null) {
+  			console.log('đã có');
+  			if(data.isWinner == history.player1.id) {
+  				history['player1']['win']++;
+  			}
+  			if(data.isWinner == history.player2.id) {
+  				history['player2']['win']++;
+  			}
+  			history.save((err) => {
+  				callback(err, history);
+  			})
+  		} else {
+  			console.log('chưa có');
+  			let newHistory = data;
+  			this.history.create(newHistory, (err, newHistory) => {
+  				callback(err, history);
+  			})
+  		}
+  	});
+  }
 }
 module.exports = new Helper();

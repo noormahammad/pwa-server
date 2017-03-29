@@ -4,30 +4,44 @@ var helper = require('./helper');
 exports = module.exports = function(io){
   io.on('connection', function(socket) {
   	var userId = socket.handshake.query.userId; 
-	  /* 
-	   * Online App
-	   */
-	  helper.changeOnApp(userId, true, (err, user) => {
-  	 /* 
-		  * Update new socketId for user 
-		 	*/
-		  helper.addSocketId(userId, socket.id, (err, user) => {
-		  	console.log('isOnApp: ' + user.onApp);
-		  	console.log('user: ' + userId + '----' + 'socketId: ' +  socket.id);
-		  	socket.broadcast.emit('new-user', user);
-		  });
-		});
+	 /* 
+	  * Update new socketId for user 
+	 	*/
+	  helper.addSocketId(userId, socket.id, (err, user) => {
+	  	console.log('user: ' + userId + '----' + 'socketId: ' +  socket.id);
+	  	socket.broadcast.emit('new-user', user);
+
+	  	// helper.changeOnApp(userId, true, (err, user) => {
+	  	// });
+	  	io.to(socket.id).emit('get-info-socket', socket.id);
+	  });
+
+		socket.on('create-friend', (data) => {
+	  	helper.createFriend(data, (err, friend) => {
+	  		if (err) return;
+	  		if (friend == null) {
+	  			console.log('đã là bạn');
+	  			return;
+	  		} 
+	  		io.to(data['toSocketId']).emit('create-friend-request', data);
+	  	})
+	  });
+
+	  socket.on('friendship-request', (usedId) => {
+	  	helper.getFriendshipRequest(userId, (err, request) => {
+	  		io.to(socket.id).emit('friendship-response', request);
+	  	});
+	  });
+		
 
 		/*
 		 * Accept request friend, have a new friend
 		 */
-		 socket.on('accept-request', (data) => {
+		socket.on('accept-request', (data) => {
 		 	fromId = data['from']['_id'];
 			toId = data['to']['_id'];
-
 		 	helper.acceptRequest(fromId, toId, (err, result) => {
 		 		if (result) {
-		 			console.log('sucess');
 		 			io.to(data['from']['socketId']).emit('friend-list-response', {
 		  			type: 'new-friend',
 		  			user: data['to']
@@ -37,13 +51,33 @@ exports = module.exports = function(io){
 		  			type: 'new-friend',
 		  			user: data['from']
 		  		});
+
+		  		//Xóa trong danh sách hiện yêu cầu
+		  		io.to(socket.id).emit('list-response', {
+						type: 'delete',
+						user: data['from']
+					});
 		 		}
 		 	})
-		 })
+		});
 
-		socket.on('unfriend', (data) => {
+		socket.on('delete-request', (data) => {
 			fromId = data['from']['_id'];
 			toId = data['to']['_id'];
+			helper.deleteRequest(fromId, toId, (err, result) => {
+				io.to(socket.id).emit('list-response', {
+					type: 'delete',
+					user: data['from']
+				});
+			});
+		});
+
+		socket.on('unfriend', (data) => {
+			console.log(data);
+			fromId = data['from']['_id'];
+			toId = data['to']['_id'];
+			data['from']['state'] = '';
+			data['to']['state'] = '';
 
 			helper.unfriend(fromId, toId, (err, result) => {
 				if (result) {
@@ -69,18 +103,22 @@ exports = module.exports = function(io){
 			});
 		});
 
-
-
 	  /* 
 	   * Online Games
 	   */
 	  socket.on('go-play-word', () => {
 	  	helper.changeStatus(userId, true, (err, user) => {
-		  	console.log('isOnlineGame: ' + user.online);
+		  	//Change sum online
 			  helper.getSumOnline((err, count) => {
-			  		io.emit('sum-online', count);
-			  	});
+			  	io.emit('sum-online', count);
 			  });
+			  //Add to online of friend
+			  socket.broadcast.emit('friend-list-response', {
+	  			singleUser: true,
+	  			userDisconnected : false, 
+	  			list_friend: user
+	  		});
+			});
 	  })
 	  
 	  socket.on('friend-list', (userId) => {
@@ -90,19 +128,14 @@ exports = module.exports = function(io){
 	  			type : 'list',
 	  			list_friend: user.list_friend
 	  		});
-
-	  		// thêm mình vào trạng thái online của bạn
-	  		socket.broadcast.emit('friend-list-response', {
-	  			singleUser: true,
-	  			userDisconnected : false, 
-	  			list_friend: user
-	  		});
 	  	});
 	  });
 
 	  socket.on('send-request', (request) => {
+
 	  	//let fromSocketId = socket.id;
 	  	let toSocketId = request.toSocketId;
+	  		console.log('To player: ' + toSocketId);
 	  	request['fromSocketId'] = socket.id;
 	  	//trạng thái đợi chấp thuận
 	  	io.to(socket.id).emit('wait-accept', "đang đợi đồng ý");
@@ -141,7 +174,7 @@ exports = module.exports = function(io){
 	  });
 
 	  /*
-	   * Sau 10s mà đối thủ không trả lời. Gửi event kết thúc.
+	   * Đối thủ không trả lời. Gửi event kết thúc.
 	   * Gửi yêu cầu kết thúc để xóa dialog hiện lên bên đối thủ
 	  */
 	  socket.on('finish-request', (data) => {
@@ -160,29 +193,23 @@ exports = module.exports = function(io){
 	  	});
 	  });
 
-	  socket.on('history', (usedId) => {
+	  socket.on('history', (data) => {
 	  	helper.getHistory(userId, (err, games) => {
-	  		//console.log(games);
+	  		io.to(socket.id).emit('history-response', games);
 	  	});
 	  });
 
-	  socket.on('create-friend', (data) => {
-	  	//console.log(data);
-	  	helper.createFriend(data, (err, friend) => {
-	  		if (err) return;
-	  		if (friend == null) {
-	  			console.log('đã là bạn');
-	  			return;
-	  		} 
-	  		io.to(data['toSocketId']).emit('create-friend-request', data);
+	  socket.on('save-history', (data) => {
+	  	if(data.player1.win >= data.player2.win) {
+	  		data['isWinner'] = data.player1.id;
+	  	} else {
+	  	  data['isWinner'] = data.player2.id;
+	  	}
+	  	//find có score lớn hơn rồi cho vào database
+	  	helper.updateHistory(data, (err, result) => {
+	  		console.log(result);
 	  	})
-	  });
-
-	  socket.on('friendship-request', (usedId) => {
-	  	helper.getFriendshipRequest(userId, (err, request) => {
-	  		io.to(socket.id).emit('friendship-response', request);
-	  	});
-	  });
+	  })
 
 		socket.on('disconnect', () => {
 			console.log('close window' + userId);

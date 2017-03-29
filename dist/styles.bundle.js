@@ -402,7 +402,7 @@ exports = module.exports = __webpack_require__(286)();
 exports.i(__webpack_require__(872), "");
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\nbody {\n  margin: 0 !important;\n  font-family: Tahoma, Verdana, sans-serif;\n}\n\n.primary {\n\tcolor: #2196f3;\n}\n\n.bg-primary {\n\tbackground-color: #2196f3;\n}\n\n.text-center {\n\ttext-align: center;\n}\n\n.size14 {\n\tfont-size: 14px;\n}\n\n.caption {\n\tfont-size: 12px;\n}\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\nbody {\n  margin: 0 !important;\n  font-family: Tahoma, Verdana, sans-serif;\n}\n\n.primary {\n\tcolor: #2196f3;\n}\n\n.bg-primary {\n\tbackground-color: #2196f3;\n}\n\n.text-center {\n\ttext-align: center;\n}\n\n.size14 {\n\tfont-size: 14px;\n}\n\n.caption {\n\tfont-size: 12px;\n}\n\n.list-notify md-card {\n\tpadding: 0 !important;\n\tbox-shadow: none !important;\n}\n\n.list-notify md-card md-card-header md-card-title,\n.list-notify md-card md-card-header md-card-subtitle{\n\tfont-size: 12px;\n}\n", ""]);
 
 // exports
 

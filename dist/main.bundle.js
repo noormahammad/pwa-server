@@ -1,6 +1,6 @@
 webpackJsonp([0,3],{
 
-/***/ 23:
+/***/ 20:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31,6 +31,7 @@ var GlobalVarsService = (function () {
         this.profile = new __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__["BehaviorSubject"]({});
         this.socket = new __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__["BehaviorSubject"](null);
         this.fullSocket = new __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__["BehaviorSubject"](null);
+        this.mySocketId = new __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__["BehaviorSubject"](null);
     }
     GlobalVarsService.prototype.setLoginStatus = function (isLoggedIn) {
         this.isUserLoggedIn.next(isLoggedIn);
@@ -40,6 +41,9 @@ var GlobalVarsService = (function () {
     };
     GlobalVarsService.prototype.setSocket = function (socket) {
         this.socket.next(socket);
+    };
+    GlobalVarsService.prototype.setMySocketId = function (socketId) {
+        this.mySocketId.next(socketId);
     };
     GlobalVarsService.prototype.setFullSocket = function (fullSocket) {
         this.fullSocket.next(fullSocket);
@@ -59,7 +63,7 @@ var GlobalVarsService = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(64);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return GameService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -175,7 +179,7 @@ var HelperService = (function () {
 
 /***/ },
 
-/***/ 35:
+/***/ 31:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -481,9 +485,9 @@ var AppComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_socket_service__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_global_vars_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_socket_service__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_global_vars_service__ = __webpack_require__(20);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return GameRequestDialogComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -504,6 +508,7 @@ var GameRequestDialogComponent = (function () {
         this.socketService = socketService;
         this.globalVars = globalVars;
         this.isAgree = false;
+        this.status = null;
     }
     GameRequestDialogComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -522,7 +527,7 @@ var GameRequestDialogComponent = (function () {
     GameRequestDialogComponent.prototype.agree = function () {
         this.isAgree = true;
         this.sendResponse();
-        //this.dialogRef.close(this.isAgree);
+        this.status = "Đang tải game...";
     };
     GameRequestDialogComponent.prototype.cancel = function () {
         this.sendResponse();
@@ -570,7 +575,7 @@ var GameRequestDialogComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_game_service__ = __webpack_require__(265);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return GameRequestComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -643,9 +648,9 @@ var GameRequestComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_global_vars_service__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_global_vars_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(31);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return WaitingGameComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -690,7 +695,7 @@ var WaitingGameComponent = (function () {
                     //đồng ý
                     if (res['agree']) {
                         clearInterval(_this.interval);
-                        _this.status = "Bạn chơi đã đồng ý. <br> Đang tải...";
+                        _this.status = "Bạn chơi đã đồng ý. <br> Đang tải game...";
                     }
                     else {
                         _this.status = "Yêu cầu không được chấp nhận.";
@@ -756,7 +761,7 @@ var WaitingGameComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(66);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return WordDialogComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -799,7 +804,7 @@ var WordDialogComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_waiting_game_waiting_game_component__ = __webpack_require__(455);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_game_request_dialog_game_request_dialog_component__ = __webpack_require__(453);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__games_writing_writing_component__ = __webpack_require__(459);
@@ -808,8 +813,8 @@ var WordDialogComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_word_service__ = __webpack_require__(461);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_helper_service__ = __webpack_require__(266);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_game_service__ = __webpack_require__(265);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_global_vars_service__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_socket_service__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_global_vars_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_socket_service__ = __webpack_require__(31);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return PlayWordComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -907,6 +912,7 @@ var PlayWordComponent = (function () {
                         _this.contentGame = res['content'];
                         _this.max = _this.contentGame.length;
                         _this.closeAllDialog();
+                        _this.isPlaying = true;
                         _this.ready();
                     }
                     else {
@@ -943,10 +949,13 @@ var PlayWordComponent = (function () {
         this.globalVars.setFullSocket(fullSocket);
     };
     PlayWordComponent.prototype.closeAllDialog = function () {
-        this.dialogRef.close();
-        this.isPlaying = true;
+        if (this.dialogRef != undefined) {
+            this.dialogRef.close();
+        }
+        //this.isPlaying = true;
     };
     PlayWordComponent.prototype.openDialog = function (toSocketId) {
+        var _this = this;
         this.isPlaying = true;
         var config = {
             disableClose: true,
@@ -966,10 +975,7 @@ var PlayWordComponent = (function () {
         instance.toSocketId = toSocketId;
         instance.isOnline = true;
         this.dialogRef.afterClosed().subscribe(function (result) {
-            console.log(result);
-            // if(result == false) {
-            //   this.isPlaying = false;
-            // }
+            _this.isPlaying = false;
         });
     };
     PlayWordComponent.prototype.openDialogReceiveRequest = function (fromUser, fromSocketId) {
@@ -992,7 +998,6 @@ var PlayWordComponent = (function () {
         instance.fromSocketId = fromSocketId;
         instance.numOfQues = this.max;
         this.dialogRef.afterClosed().subscribe(function (result) {
-            console.log(result);
             _this.isPlaying = false;
         });
     };
@@ -1030,7 +1035,6 @@ var PlayWordComponent = (function () {
         if (this.count == this.max) {
             this.doneGame();
             this.isEnd = true;
-            this.isPlaying = false;
             return;
         }
         this.count++;
@@ -1163,6 +1167,7 @@ var PlayWordComponent = (function () {
     };
     PlayWordComponent.prototype.doneGame = function () {
         if (this.onlineGame) {
+            this.isPlaying = false;
             this.turn['game'] = 'word';
             this.turn['contentGame'] = this.contentGame;
             if (this.isReceiver) {
@@ -1191,15 +1196,6 @@ var PlayWordComponent = (function () {
         this.playerFriend = friend;
         this.to = friend;
         this.to['score'] = 0;
-    };
-    PlayWordComponent.prototype.sendRequestGame = function () {
-        if (!this.isRequest) {
-            this.gameService.createGame(this.turn).then(function (res) {
-                console.log(res);
-            });
-        }
-        else {
-        }
     };
     PlayWordComponent.prototype.toUser = function (toUser) {
         this.to = toUser;
@@ -1492,7 +1488,7 @@ var WritingComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(64);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return LoginService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1548,7 +1544,7 @@ var LoginService = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(64);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return WordService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1625,17 +1621,17 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_hammerjs__ = __webpack_require__(883);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_hammerjs__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(452);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_flex_layout__ = __webpack_require__(611);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_router__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_global_vars_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_global_vars_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_home_home_component__ = __webpack_require__(712);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__games_play_word_play_word_component__ = __webpack_require__(457);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_menu_game_menu_game_component__ = __webpack_require__(702);
@@ -1763,7 +1759,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["MaterialModule"].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_7__angular_flex_layout__["a" /* FlexLayoutModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_8__angular_router__["b" /* RouterModule */].forRoot(appRoutes),
+                __WEBPACK_IMPORTED_MODULE_8__angular_router__["b" /* RouterModule */].forRoot(appRoutes, { useHash: true }),
                 __WEBPACK_IMPORTED_MODULE_34_angular2_notifications__["PushNotificationsModule"]
             ],
             providers: [__WEBPACK_IMPORTED_MODULE_9__services_global_vars_service__["a" /* GlobalVarsService */]],
@@ -2063,8 +2059,8 @@ var GamePlayerComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_socket_service__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_socket_service__ = __webpack_require__(31);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return HistoryComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2082,6 +2078,7 @@ var HistoryComponent = (function () {
     function HistoryComponent(socketService, globalVars) {
         this.socketService = socketService;
         this.globalVars = globalVars;
+        this.history = [];
     }
     HistoryComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -2089,7 +2086,11 @@ var HistoryComponent = (function () {
             if (value != null) {
                 _this.socket = value['socket'];
                 _this.profile = value['profile'];
-                _this.socketService.getHistory(_this.socket, _this.profile['_id']);
+                var data = {};
+                data['userId'] = _this.profile['_id'];
+                _this.socketService.sendListenEventArr(_this.socket, 'history', 'history-response', data).subscribe(function (res) {
+                    _this.history = res;
+                });
             }
         });
     };
@@ -2116,7 +2117,7 @@ var HistoryComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_word_service__ = __webpack_require__(461);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_helper_service__ = __webpack_require__(266);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_material__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_material__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_word_dialog_word_dialog_component__ = __webpack_require__(456);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return LearningComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2313,7 +2314,7 @@ var LoginFacebookComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_login_service__ = __webpack_require__(460);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_user_service__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(92);
@@ -2467,6 +2468,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+// declare const FB: any;
 var LoginComponent = (function () {
     function LoginComponent() {
     }
@@ -2492,9 +2494,9 @@ var LoginComponent = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_global_vars_service__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_material__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_global_vars_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_material__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angular2_notifications__ = __webpack_require__(267);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angular2_notifications___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_angular2_notifications__);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MenuGameComponent; });
@@ -2530,18 +2532,6 @@ var MenuGameComponent = (function () {
                 _this.isLogin = true;
             }
         });
-        // this._push.create('Test', {body: 'something'}).subscribe(
-        //         res => console.log(res),
-        //         err => console.log(err)
-        //     )
-        // if (this._push.permission == 'granted') {
-        //   this._push.create('Test', {body: 'something'}).subscribe(
-        //         res => console.log(res),
-        //         err => console.log(err)
-        //     );
-        // } else {
-        //   this._push.requestPermission();
-        // }
         // this.connection = this.socketService.getMessages().subscribe(message => {
         //   console.log(message);
         //   this.messages.push(message);
@@ -2591,7 +2581,8 @@ var MenuGameComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_game_service__ = __webpack_require__(265);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_material__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_global_vars_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_socket_service__ = __webpack_require__(31);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MyAnswerComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2606,23 +2597,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MyAnswerComponent = (function () {
-    function MyAnswerComponent(gameService, router, snackBar) {
+    function MyAnswerComponent(gameService, router, globalVars, socketService) {
         this.gameService = gameService;
         this.router = router;
-        this.snackBar = snackBar;
+        this.globalVars = globalVars;
+        this.socketService = socketService;
         this.goBack = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* EventEmitter */]();
         this.fromAns = [];
         this.toAns = [];
         this.isSend = false;
     }
     MyAnswerComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.content = this.turnGame['contentGame'];
         this.fromAns = this.turnGame['fromAns'];
         this.toAns = this.turnGame['toAns'];
-        if (this.isReceiver) {
-            this.saveGame();
-        }
+        this.globalVars.fullSocket.subscribe(function (res) {
+            if (res != null) {
+                _this.socket = res['socket'];
+                if (_this.isReceiver) {
+                    _this.saveGame();
+                }
+            }
+        });
     };
     MyAnswerComponent.prototype.compare = function (str1, str2) {
         if (str1 == null || str2 == null)
@@ -2645,32 +2644,30 @@ var MyAnswerComponent = (function () {
         turn['played'] = true;
         turn['from']['score'] = this.from['score'];
         turn['to']['score'] = this.to['score'];
-        this.gameService.createGame(turn).then(function (res) {
-            console.log('success');
-            //console.log(res);
-        });
+        // this.gameService.createGame(turn).then(res => {
+        //   console.log('success');
+        //   //console.log(res);
+        // });
+        var history = {
+            "player1": {
+                "id": this.from['_id'],
+                "win": 0
+            },
+            "player2": {
+                "id": this.to['_id'],
+                "win": 0
+            }
+        };
+        if (this.from['score'] >= this.to['score']) {
+            history['player1']['win'] = 1;
+        }
+        else {
+            history['player2']['win'] = 1;
+        }
+        if (this.socket != null) {
+            this.socketService.sendEvent(this.socket, 'save-history', history);
+        }
     };
-    // sendRequestGame() {
-    //   if (!this.isRequest) {
-    //     this.gameService.createGame(this.turnGame).then(res => {
-    //       this.openSnackBar('Send request success!');
-    //       this.isSend = true;
-    //       //this.router.navigate(['/playword']);
-    //     });
-    //   } else {
-    //     console.log(this.turnGame);
-    //     this.gameService.updateGame(this.turnGame['_id'], this.turnGame).then(res => {
-    //       this.openSnackBar('Save success!');
-    //       this.isSend = true;
-    //       //this.router.navigate(['/playword']);
-    //     });
-    //   }
-    // }
-    // openSnackBar(message) {
-    //   this.snackBar.open(message,'', {
-    //     duration: 3000,
-    //   });
-    // }
     MyAnswerComponent.prototype.goPlayWord = function () {
         this.goBack.emit(true);
     };
@@ -2707,12 +2704,12 @@ var MyAnswerComponent = (function () {
             selector: 'app-my-answer',
             template: __webpack_require__(925),
             styles: [__webpack_require__(899)],
-            providers: [__WEBPACK_IMPORTED_MODULE_1__services_game_service__["a" /* GameService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_1__services_game_service__["a" /* GameService */], __WEBPACK_IMPORTED_MODULE_4__services_socket_service__["a" /* SocketService */]]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_game_service__["a" /* GameService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__services_game_service__["a" /* GameService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_material__["MdSnackBar"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_material__["MdSnackBar"]) === 'function' && _c) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_game_service__["a" /* GameService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__services_game_service__["a" /* GameService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_global_vars_service__["a" /* GlobalVarsService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__services_global_vars_service__["a" /* GlobalVarsService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_socket_service__["a" /* SocketService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__services_socket_service__["a" /* SocketService */]) === 'function' && _d) || Object])
     ], MyAnswerComponent);
     return MyAnswerComponent;
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
 }());
 //# sourceMappingURL=D:/pwa/demo/src/my-answer.component.js.map
 
@@ -2723,9 +2720,9 @@ var MyAnswerComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(31);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MyFriendsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2751,31 +2748,37 @@ var MyFriendsComponent = (function () {
         this.friends = [];
         this.selectedFriend = false;
         this.playerFriend = {};
+        this.profile = {};
     }
     MyFriendsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.globalVars.profile.subscribe(function (value) {
-            if (value['_id'] == undefined)
-                return;
-            _this.globalVars.socket.subscribe(function (socket) {
-                if (value['_id'] != undefined && socket != null) {
-                    _this.socketService.getFriendList(socket, value['_id']).subscribe(function (res) {
-                        if (res['type'] == 'list') {
-                            _this.friends = res['list_friend'];
-                        }
-                        else {
-                            if (res['singleUser'] && _this.checkUserInList(res['list_friend']['_id'])) {
-                                if (_this.friends.length > 0) {
-                                    _this.friends = _this.friends.filter(function (obj) {
-                                        return obj['_id'] !== res['list_friend']['_id'];
-                                    });
-                                }
-                                _this.friends.push(res['list_friend']);
+        this.globalVars.fullSocket.subscribe(function (res) {
+            if (res != null) {
+                _this.socket = res['socket'];
+                _this.profile = res['profile'];
+                _this.socketService.getFriendList(_this.socket, _this.profile['_id']).subscribe(function (res) {
+                    if (res['type'] == 'list') {
+                        _this.friends = res['list_friend'];
+                    }
+                    else {
+                        if (res['singleUser'] && _this.checkUserInList(res['list_friend']['_id'])) {
+                            if (_this.friends.length > 0) {
+                                console.log(res['list_friend']['socketId']);
+                                _this.friends = _this.friends.filter(function (obj) {
+                                    return obj['_id'] !== res['list_friend']['_id'];
+                                });
                             }
+                            _this.friends.push(res['list_friend']);
                         }
-                    });
-                }
-            });
+                        if (res['type'] == 'new-friend') {
+                            _this.friends.push(res['user']);
+                        }
+                        if (res['type'] == 'unfriend') {
+                            _this.friends = _this.removeInArray(_this.friends, res['user']);
+                        }
+                    }
+                });
+            }
         });
     };
     MyFriendsComponent.prototype.chooseFriend = function (item) {
@@ -2807,6 +2810,12 @@ var MyFriendsComponent = (function () {
             }
             return false;
         }
+    };
+    MyFriendsComponent.prototype.removeInArray = function (arr, user) {
+        arr = arr.filter(function (obj) {
+            return obj['_id'] !== user['_id'];
+        });
+        return arr;
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Output */])(), 
@@ -2851,13 +2860,13 @@ var MyFriendsComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(92);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__games_play_word_play_word_component__ = __webpack_require__(457);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_login_service__ = __webpack_require__(460);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_user_service__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_socket_service__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_material__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_socket_service__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_material__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angular2_notifications__ = __webpack_require__(267);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angular2_notifications___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_angular2_notifications__);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return NavLoginComponent; });
@@ -2892,6 +2901,7 @@ var NavLoginComponent = (function () {
         this.isLogin = false;
         this.profile = {};
         this.showNoti = false;
+        this.requests = [];
     }
     NavLoginComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -2904,30 +2914,87 @@ var NavLoginComponent = (function () {
         this.globalVars.profile.subscribe(function (value) {
             _this.zone.run(function () {
                 _this.profile = value;
-                if (_this.profile['_id'] != undefined) {
+                if (value['_id'] != undefined) {
                     _this.socket = _this.socketService.connectSocket(_this.profile['_id']);
                     _this.setGlobal(_this.profile, _this.socket);
                 }
             });
         });
+        //get correct socket from mlab
+        this.globalVars.mySocketId.subscribe(function (value) {
+            if (value != null) {
+                _this.mySocketId = value;
+            }
+        });
         this.globalVars.fullSocket.subscribe(function (value) {
             if (value != null) {
                 _this.socket = value['socket'];
+                var id = value['profile']['_id'];
+                _this.socketService.listenEvent(_this.socket, 'get-info-socket').subscribe(function (res) {
+                    _this.globalVars.setMySocketId(res);
+                });
                 _this.socketService.createFriendRequest(_this.socket).subscribe(function (res) {
-                    //console.log(res);
                     _this.createPush('Yêu cầu kết bạn', res['fromInfo']['name'] + ' đã gửi yêu cầu kết bạn');
+                    res['fromInfo']['state'] = 'isRequest';
+                    _this.requests.push(res['fromInfo']);
+                });
+                _this.socketService.getFriendshipRequest(_this.socket, id).subscribe(function (res) {
+                    _this.zone.run(function () {
+                        _this.requests = res;
+                        if (_this.requests.length == 0) {
+                        }
+                        else {
+                            for (var i = 0; i < _this.requests.length; i++) {
+                                _this.requests[i]['state'] = 'isRequest';
+                            }
+                        }
+                    });
+                });
+                _this.socketService.listenEvent(_this.socket, 'new-user').subscribe(function (res) {
+                    if (_this.getNewArray(_this.requests, res) != null) {
+                        //console.log('a new user in requests online ' + res['socketId']);
+                        _this.requests = _this.getNewArray(_this.requests, res);
+                        for (var i = 0; i < _this.requests.length; i++) {
+                            _this.requests[i]['state'] = 'isRequest';
+                        }
+                    }
+                });
+                _this.socketService.listenEvent(_this.socket, 'list-response').subscribe(function (res) {
+                    if (res['type'] == 'delete') {
+                        _this.requests = _this.removeInArray(_this.requests, res['user']);
+                    }
                 });
             }
         });
     };
+    NavLoginComponent.prototype.getNewArray = function (arr, newUser) {
+        for (var i = 0; i < arr.length; i++) {
+            if (newUser['_id'] == arr[i]['_id']) {
+                arr = arr.filter(function (obj) {
+                    return obj['_id'] !== newUser['_id'];
+                });
+                arr.push(newUser);
+                return arr;
+            }
+        }
+        return null;
+    };
+    NavLoginComponent.prototype.removeInArray = function (arr, user) {
+        arr = arr.filter(function (obj) {
+            return obj['_id'] !== user['_id'];
+        });
+        return arr;
+    };
     NavLoginComponent.prototype.createPush = function (title, body) {
         if (this._push.permission == 'granted') {
-            this._push.create(title, { body: body, icon: 'assets/images/default-avatar.png' }).subscribe(function (res) { return console.log(res); }, function (err) { return console.log(err); });
+            this._push.create(title, {
+                body: body,
+                icon: 'assets/images/default-avatar.png'
+            }).subscribe(function (res) { }, function (err) { });
         }
     };
-    // //set socket and profile to global
+    //set socket and profile to global
     NavLoginComponent.prototype.setGlobal = function (profile, socket) {
-        this.globalVars.setSocket(socket);
         var fullSocket = {};
         fullSocket['profile'] = profile;
         fullSocket['socket'] = socket;
@@ -3024,8 +3091,8 @@ var NavLoginComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_socket_service__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_socket_service__ = __webpack_require__(31);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return RandomUserComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3095,8 +3162,8 @@ var RandomUserComponent = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_global_vars_service__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_global_vars_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(31);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return SearchFriendComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3137,14 +3204,14 @@ var SearchFriendComponent = (function () {
                 });
                 _this.socketService.listenEvent(_this.socket, 'new-user').subscribe(function (res) {
                     if (_this.getNewArray(_this.requests, res) != null) {
-                        console.log('a new user in requests online');
+                        //console.log('a new user in requests online');
                         _this.requests = _this.getNewArray(_this.requests, res);
                         for (var i = 0; i < _this.requests.length; i++) {
                             _this.requests[i]['isRequest'] = true;
                         }
                     }
                     if (_this.getNewArray(_this.result, res) != null) {
-                        console.log('a new user in search result online');
+                        //console.log('a new user in search result online');
                         _this.result = _this.getNewArray(_this.result, res);
                     }
                 });
@@ -3163,35 +3230,24 @@ var SearchFriendComponent = (function () {
         }
         return null;
     };
+    SearchFriendComponent.prototype.onKey = function (event) {
+        this.search();
+    };
     SearchFriendComponent.prototype.search = function () {
         var _this = this;
         if (this.query != '') {
             var data = {};
             data['query'] = this.query;
             this.socketService.sendListenEventArr(this.socket, 'search-user', 'search-user-response', data).subscribe(function (res) {
+                for (var i = 0; i < res.length; i++) {
+                    res[i]['state'] = '';
+                }
                 _this.result = res;
             });
         }
         else {
             this.result = [];
         }
-        // if(this.query != '') {
-        // 	this.userService.findUser(this.query).then(res => {
-        // 		this.zone.run(() => {
-        // 			this.result = res;
-        //        for(let i = 0; i < this.result.length; i++){
-        //          for(let j = 0; j < this.requests.length; j++) {
-        //            if(this.result[i]['_id'] == this.requests[j]['_id']){
-        //              this.result[i]['isRequest'] = true;
-        //              break;
-        //            }
-        //          }
-        //        }
-        // 	  });		
-        // 	});
-        // } else {
-        //    this.result = [];
-        //  }
     };
     SearchFriendComponent.prototype.createFriend = function (item) {
         if (this.profile['_id'] != undefined) {
@@ -3267,8 +3323,8 @@ var UserCardComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_socket_service__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_socket_service__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_user_service__ = __webpack_require__(94);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return UserItemComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -3292,23 +3348,23 @@ var UserItemComponent = (function () {
         this.profile = {};
         this.user = {};
         this.isMe = false;
-        this.isFriend = false;
-        this.isRequest = false;
         this.requests = [];
         this.state = '';
+        this.sendRequest = false;
     }
     UserItemComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.globalVars.mySocketId.subscribe(function (value) {
+            if (value != null) {
+                _this.mySocketId = value;
+            }
+        });
         this.globalVars.fullSocket.subscribe(function (value) {
             if (value != null) {
                 _this.profile = value['profile'];
                 var myId = value['profile']['_id'];
                 var friendId = _this.user['_id'];
                 _this.socket = value['socket'];
-                if (_this.profile['list_friend'].indexOf(_this.user['_id']) >= 0) {
-                    _this.isFriend = true;
-                    _this.state = 'isFriend';
-                }
                 if (_this.profile['_id'] == _this.user['_id'])
                     _this.isMe = true;
             }
@@ -3318,7 +3374,6 @@ var UserItemComponent = (function () {
         if (requests.length > 0) {
             for (var i = 0; i < requests.length; i++) {
                 if (requests[i]['_id'] == friendId) {
-                    this.isRequest = true;
                     this.state = 'isRequest';
                     break;
                 }
@@ -3327,6 +3382,7 @@ var UserItemComponent = (function () {
     };
     UserItemComponent.prototype.unfriend = function () {
         var data = {};
+        this.updateSocketId();
         data['from'] = this.profile;
         data['to'] = this.user;
         this.socketService.sendEvent(this.socket, 'unfriend', data);
@@ -3335,27 +3391,32 @@ var UserItemComponent = (function () {
         if (this.profile['_id'] != undefined) {
             var friend = {};
             friend['from'] = this.profile['_id'];
+            this.updateSocketId();
             friend['fromInfo'] = this.profile;
             friend['to'] = this.user['_id'];
-            if (this.user['onApp'] == true) {
-                friend['toSocketId'] = this.user['socketId'];
-                this.socketService.createFriend(this.socket, friend);
-            }
+            friend['toSocketId'] = this.user['socketId'];
+            this.socketService.createFriend(this.socket, friend);
+            this.sendRequest = true;
+        }
+    };
+    UserItemComponent.prototype.updateSocketId = function () {
+        if (this.mySocketId != null) {
+            this.profile['socketId'] = this.mySocketId;
         }
     };
     UserItemComponent.prototype.acceptRequest = function () {
+        this.updateSocketId();
         var data = {};
         data['from'] = this.user;
         data['to'] = this.profile;
         this.socketService.sendEvent(this.socket, 'accept-request', data);
-        this.user = null;
     };
     UserItemComponent.prototype.ignoreRequest = function () {
-        var _this = this;
-        this.userService.ignore(this.user['_id'], this.profile['_id']).then(function (res) {
-            console.log(res);
-            _this.user = null;
-        });
+        this.updateSocketId();
+        var data = {};
+        data['from'] = this.user;
+        data['to'] = this.profile;
+        this.socketService.sendEvent(this.socket, 'delete-request', data);
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Input */])(), 
@@ -3493,9 +3554,9 @@ var HomeComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_global_vars_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_socket_service__ = __webpack_require__(31);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ProfileComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3531,20 +3592,19 @@ var ProfileComponent = (function () {
                 _this.socketService.getFriendList(_this.socket, id).subscribe(function (res) {
                     if (res['type'] == 'list') {
                         _this.zone.run(function () {
+                            for (var i = 0; i < res['list_friend'].length; i++) {
+                                res['list_friend'][i]['state'] = 'isFriend';
+                            }
                             _this.friends = res['list_friend'];
                         });
                     }
                     else {
                         if (res['type'] == 'unfriend') {
-                            _this.zone.run(function () {
-                                _this.friends = _this.removeInArray(_this.friends, res['user']);
-                            });
+                            _this.friends = _this.removeInArray(_this.friends, res['user']);
                         }
                         if (res['type'] == 'new-friend') {
-                            res['user']['isFriend'] = true;
-                            res['user']['isRequest'] = false;
+                            res['user']['state'] = 'isFriend';
                             _this.friends.push(res['user']);
-                            _this.requests = _this.removeInArray(_this.requests, res['user']);
                         }
                     }
                 });
@@ -3562,15 +3622,9 @@ var ProfileComponent = (function () {
                     });
                 });
                 _this.socketService.listenEvent(_this.socket, 'new-user').subscribe(function (res) {
-                    if (_this.getNewArray(_this.requests, res) != null) {
-                        console.log('a new user in requests online');
-                        _this.requests = _this.getNewArray(_this.requests, res);
-                        for (var i = 0; i < _this.requests.length; i++) {
-                            _this.requests[i]['isRequest'] = true;
-                        }
-                    }
                     if (_this.getNewArray(_this.friends, res) != null) {
-                        console.log('a new user in friends online');
+                        //console.log('a new user in friends online');
+                        res['state'] = 'isFriend';
                         _this.friends = _this.getNewArray(_this.friends, res);
                     }
                 });
@@ -3639,7 +3693,7 @@ var ProfileComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(64);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return SongService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3785,7 +3839,7 @@ module.exports = ""
 /***/ 893:
 /***/ function(module, exports) {
 
-module.exports = ""
+module.exports = ".avatar img {\r\n\twidth: 60px;\r\n\theight: 60px;\r\n\tborder-radius: 50%;\r\n\tvertical-align: middle;\r\n}\r\n\r\n.item-history {\r\n  padding: 10px;\r\n  border-bottom: 1px solid #eee;\r\n}\r\n\r\n.win-score {\r\n\tfont-size: 18px;\r\n  color: #2196F3;\r\n}\r\n\r\n"
 
 /***/ },
 
@@ -3841,7 +3895,7 @@ module.exports = ".item-friend {\r\n\tmax-width: 60px;\r\n\tfloat: left;\r\n\tma
 /***/ 901:
 /***/ function(module, exports) {
 
-module.exports = ".right-menu {\r\n  font-size: 15px;\r\n  padding-right: 10px;\r\n  cursor: pointer;\r\n  display: inline-block;\r\n}\r\n\r\n.right-menu span {\r\n\tvertical-align: middle;\t\r\n}\r\n\r\n.avatar {\r\n\twidth: 40px;\r\n\theight: 40px;\r\n\tborder-radius: 50%;\r\n\tvertical-align: middle;\r\n}\r\n\r\n.notification-container {\r\n    position: relative;\r\n   /* width: 16px;\r\n    height: 16px;\r\n    top: 15px;\r\n    left: 15px;*/\r\n}\r\n\r\n.notification-counter {   \r\n    position: absolute;\r\n    top: 5px;\r\n    left: 22px;\r\n    \r\n    background-color: rgba(212, 19, 13, 1);\r\n    color: #fff;\r\n    border-radius: 3px;\r\n    padding: 1px 3px;\r\n    font: 8px Verdana;\r\n}\r\n\r\n.list-notify {\r\n\tdisplay: inline-block; \r\n\tposition: absolute; \r\n\tz-index: 1000;\r\n\ttop: 23px; \r\n\tright: 0;\r\n\twidth: 60vh;\r\n\tbackground-color: white;\r\n\tcolor: black;\r\n\tpadding: 15px;\r\n\tborder: 1px solid rgba(128, 128, 128, 0.2)\r\n}\r\n\r\n"
+module.exports = ".right-menu {\r\n  font-size: 15px;\r\n  padding-right: 10px;\r\n  cursor: pointer;\r\n  display: inline-block;\r\n}\r\n\r\n.right-menu span {\r\n\tvertical-align: middle;\t\r\n}\r\n\r\n.avatar {\r\n\twidth: 40px;\r\n\theight: 40px;\r\n\tborder-radius: 50%;\r\n\tvertical-align: middle;\r\n}\r\n\r\n.notification-container {\r\n    position: relative;\r\n   /* width: 16px;\r\n    height: 16px;\r\n    top: 15px;\r\n    left: 15px;*/\r\n}\r\n\r\nmd-list-item {\r\n  padding-bottom: 10px;\r\n  border-bottom: 1px solid #ccc;\r\n}\r\n\r\n.notification-counter {   \r\n    position: absolute;\r\n    top: 5px;\r\n    left: 22px;\r\n    \r\n    background-color: rgba(212, 19, 13, 1);\r\n    color: #fff;\r\n    border-radius: 3px;\r\n    padding: 1px 3px;\r\n    font: 8px Verdana;\r\n}\r\n\r\n.list-notify {\r\n\tdisplay: inline-block; \r\n\tposition: absolute; \r\n\tz-index: 1000;\r\n\ttop: 23px; \r\n\tright: 0;\r\n\twidth: 60vh;\r\n\tbackground-color: white;\r\n\tcolor: black;\r\n\tpadding: 6px 15px 15px 15px;\r\n\tborder: 1px solid rgba(128, 128, 128, 0.2)\r\n}\r\n\r\nhr {\r\n    display: block;\r\n    height: 1px;\r\n    border: 0;\r\n    border-top: 1px solid #ccc;\r\n    margin: 1em 0;\r\n    padding: 0; \r\n}\r\n"
 
 /***/ },
 
@@ -3855,14 +3909,14 @@ module.exports = ".numOfOnline {\r\n\tfont-size: 14px;\r\n}"
 /***/ 903:
 /***/ function(module, exports) {
 
-module.exports = ""
+module.exports = ".search-result {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n}"
 
 /***/ },
 
 /***/ 904:
 /***/ function(module, exports) {
 
-module.exports = ".avatar {\r\n\tposition: relative;\r\n}\r\n.username {\r\n\tfont-size: 12px;\r\n}\r\n\r\nimg {\r\n\twidth: 80px;\r\n\theight: 80px;\r\n\tborder: 1px solid #03a9f4;\r\n\tborder-radius: 50%;\r\n\tcursor: pointer;\r\n}\r\n\r\n.status {\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\twidth: 18px;\r\n\theight: 18px;\r\n\tborder-radius: 50%;\r\n\tbottom: 5px;\r\n\tleft: 0;\r\n}"
+module.exports = ".avatar {\r\n\tposition: relative;\r\n}\r\n.username {\r\n\tfont-size: 12px;\r\n}\r\n\r\nimg {\r\n\twidth: 60px;\r\n\theight: 60px;\r\n\tborder: 1px solid #03a9f4;\r\n\tborder-radius: 50%;\r\n\tcursor: pointer;\r\n}\r\n\r\n.status {\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\twidth: 18px;\r\n\theight: 18px;\r\n\tborder-radius: 50%;\r\n\tbottom: 5px;\r\n\tleft: 0;\r\n}"
 
 /***/ },
 
@@ -3925,7 +3979,7 @@ module.exports = ".example-fill-remaining-space {\r\n  -webkit-box-flex: 1;\r\n 
 /***/ 913:
 /***/ function(module, exports) {
 
-module.exports = ".profile img {\r\n\tdisplay: block;\r\n\twidth: 80px;\r\n\theight: 80px;\r\n\tmargin: 0 auto;\r\n}"
+module.exports = ".profile img {\r\n\tdisplay: block;\r\n\twidth: 80px;\r\n\theight: 80px;\r\n\tmargin: 0 auto;\r\n}\r\n\r\n.profile {\r\n\tmax-width: 800px;\r\n\tmargin: 0 auto;\r\n}\r\n\r\n.search-box {\r\n\tposition: relative;\r\n}"
 
 /***/ },
 
@@ -3953,7 +4007,7 @@ module.exports = "<div *ngIf=\"from&&to\">\n  <div  class=\"waiting-game flex-co
 /***/ 917:
 /***/ function(module, exports) {
 
-module.exports = "<h4 class=\"primary text-center\"> Yêu cầu </h4>\n<div *ngIf=\"from\">\n<p class=\"text-center\"> {{from.name}} đã gửi yêu cầu cho bạn</p>\n<div class=\"item-friend \">\n      <div class=\"avatar\" style=\"margin: 0 auto;\">\n        <img md-card-avatar *ngIf=\"!from.imageUrl\" src=\"/assets/images/default-avatar.png\">\n        <img md-card-avatar *ngIf=\"from.imageUrl\" src=\"{{from.imageUrl}}\">\n      </div>\n      <p class=\"name-friend text-center primary\">{{from.name}}</p>\n</div>\n<div class=\"action\">\n    <button md-button (click)=\"cancel()\">Hủy</button>\n    <button md-button (click)=\"agree()\">Chấp nhận</button>\n</div>\n</div>\n"
+module.exports = "<h4 class=\"primary text-center\"> Yêu cầu </h4>\n<div *ngIf=\"from\">\n<p class=\"text-center\"> {{from.name}} đã gửi yêu cầu cho bạn</p>\n<div class=\"item-friend \">\n      <div class=\"avatar\" style=\"margin: 0 auto;\">\n        <img md-card-avatar *ngIf=\"!from.imageUrl\" src=\"/assets/images/default-avatar.png\">\n        <img md-card-avatar *ngIf=\"from.imageUrl\" src=\"{{from.imageUrl}}\">\n      </div>\n      <p class=\"name-friend text-center primary\">{{from.name}}</p>\n</div>\n<h4 *ngIf=\"status\" class=\"primary\" style=\"text-align: center;\" [innerHTML]=\"status\"></h4>\n<div class=\"action\">\n    <button md-button (click)=\"cancel()\" [disabled]=\"status\" >Hủy</button>\n    <button md-button (click)=\"agree()\" [disabled]=\"status\" >Chấp nhận</button>\n</div>\n</div>\n"
 
 /***/ },
 
@@ -3967,7 +4021,7 @@ module.exports = "<h3 class=\"primary\"><md-icon>videogame_asset</md-icon> My re
 /***/ 919:
 /***/ function(module, exports) {
 
-module.exports = "<h3 class=\"primary\"><md-icon>history</md-icon> History</h3>\n"
+module.exports = "<h3 class=\"primary\"><md-icon>history</md-icon> History</h3>\n<div *ngIf=\"history.length==0\" class=\"caption\">Không có trận đấu nào gần đây.</div>\n<md-list *ngIf=\"history.length>0\">\n  <div *ngFor=\"let item of history\">\n  \t<div class=\"flex-container item-history\" \n\t    fxLayout=\"row\"\n\t    fxLayoutAlign=\"space-around start\">\n\t  <div class=\"flex-item\" fxFlex=\"50%\">\n\t  \t<div class=\"avatar\">\n\t\t    <img md-card-avatar *ngIf=\"item.player1.id.imageUrl\" src=\"{{item.player1.id.imageUrl}}\">\n\t\t    <span>{{item.player1.id.name}}</span>\n\t    </div>\n    \t\n    </div>\n    <div class=\"flex-item\" fxFlex>\n    \t<p class=\"win-score\">\n    \t\t{{item.player1.win}} : {{item.player2.win}}\n    \t</p>\n    </div>\n    </div>\n  </div>\n</md-list>"
 
 /***/ },
 
@@ -4002,7 +4056,7 @@ module.exports = "<div class=\"login\">\n  <h2 style=\"text-align: center;\"> LO
 /***/ 924:
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"flex-container game-box\" \n     fxLayout=\"row\" \n     fxLayoutAlign=\"space-around start\" \n    >\n  <div class=\"flex-item\" fxFlex>\n    <img src=\"assets/images/learn.png\" (click)=\"toLearn()\">\n    <div class=\"game-name\"> Learning </div>\n  </div>\n  <div class=\"flex-item\" fxFlex=\"50%\">\n    <img src=\"assets/images/game/game.png\" (click)=\"playWord()\">\n    <div class=\"game-name\"> Play Word</div>\n  </div>\n</div> \n"
+module.exports = "<div class=\"flex-container game-box\" \n     fxLayout=\"row\" fxLayout.xs=\"column\" fxLayout.sm=\"row\"\n     fxLayoutAlign=\"space-around center\" \n    >\n  <div class=\"flex-item\" fxFlex>\n    <img src=\"assets/images/learn.png\" (click)=\"toLearn()\">\n    <div class=\"game-name\"> Learning </div>\n  </div>\n  <div class=\"flex-item\" fxFlex=\"50%\">\n    <img src=\"assets/images/game/game.png\" (click)=\"playWord()\">\n    <div class=\"game-name\"> Play Word</div>\n  </div>\n</div> \n"
 
 /***/ },
 
@@ -4016,28 +4070,28 @@ module.exports = "<table width=\"100%\">\n\t<tr>\n\t\t<th></th>\n\t\t<th class=\
 /***/ 926:
 /***/ function(module, exports) {
 
-module.exports = "<h3 class=\"primary\"><md-icon>people_outline</md-icon> My friends</h3>\n<div *ngIf=\"friends.length > 0\" class=\"friends-list\">\n\t<div class=\"item-friend\" *ngFor=\"let item of friends\" (click)=\"chooseFriend(item)\">\n    <div class=\"avatar\">\n\t    <img md-card-avatar [@friendState]=\"item.state\" *ngIf=\"!item.imageUrl\" \n\t    src=\"/assets/images/default-avatar.png\" \n\t    [ngStyle]=\"item.online ? {'opacity': '1'}: {'opacity': '0.4'} \">\n\t    <img md-card-avatar [@friendState]=\"item.state\" *ngIf=\"item.imageUrl\" \n\t    src=\"{{item.imageUrl}}\"\n\t    [ngStyle]=\"item.online ? {'opacity': '1'}: {'opacity': '0.4'} \">\n\t    <span class=\"status\" *ngIf=\"item.online\" style=\"background-color: #2196f3;\">&nbsp;</span>\n\t    <span class=\"status\" *ngIf=\"!item.online\" style=\"background-color: gray\">&nbsp;</span>\n    </div>\n    <p class=\"name-friend\" style=\"margin: 0;\">{{item.name}}</p>\n\t</div>\n</div>\n<div style=\"clear: both;\"></div>\n<div *ngIf=\"selectedFriend\" class=\"size14 info-choose\"> You chose {{playerFriend.name}}</div>\n"
+module.exports = "<h3 class=\"primary\"><md-icon>people_outline</md-icon> My friends</h3>\n<div *ngIf=\"friends.length == 0\" class=\"caption\">Bạn chưa có bạn.</div>\n<div *ngIf=\"friends.length > 0\" class=\"friends-list\">\n\t<div class=\"item-friend\" *ngFor=\"let item of friends\" (click)=\"chooseFriend(item)\">\n    <div class=\"avatar\">\n\t    <img md-card-avatar [@friendState]=\"item.state\" *ngIf=\"!item.imageUrl\" \n\t    src=\"/assets/images/default-avatar.png\" \n\t    [ngStyle]=\"item.online ? {'opacity': '1'}: {'opacity': '0.4'} \">\n\t    <img md-card-avatar [@friendState]=\"item.state\" *ngIf=\"item.imageUrl\" \n\t    src=\"{{item.imageUrl}}\"\n\t    [ngStyle]=\"item.online ? {'opacity': '1'}: {'opacity': '0.4'} \">\n\t    <span class=\"status\" *ngIf=\"item.online\" style=\"background-color: #2196f3;\">&nbsp;</span>\n\t    <span class=\"status\" *ngIf=\"!item.online\" style=\"background-color: gray\">&nbsp;</span>\n    </div>\n    <p class=\"name-friend\" style=\"margin: 0;\">{{item.name}}</p>\n\t</div>\n</div>\n<div style=\"clear: both;\"></div>\n<div *ngIf=\"selectedFriend\" class=\"size14 info-choose\"> You chose {{playerFriend.name}}</div>\n"
 
 /***/ },
 
 /***/ 927:
 /***/ function(module, exports) {
 
-module.exports = "<span *ngIf=\"!isLogin\">\n\t<span routerLink=\"/login\" class=\"right-menu\">Log in</span>\n \t<!-- <span routerLink=\"/register\" class=\"right-menu\">Register</span> -->\n</span>\n\n<div *ngIf=\"isLogin\" class=\"right-menu\">\n\t<img class=\"avatar\" src=\"{{profile.imageUrl}}\"> \n\t<span style=\"vertical-align: middle; line-height: 64px;\">{{profile.name}}</span>\n\t<span style=\"position: relative;\">\n\t<button md-icon-button class=\"notification-container\" (click)=\"showNotify()\">\n    <md-icon>public</md-icon>\n    <span class=\"notification-counter\">1</span>\n  </button>\n  <div class=\"list-notify\" *ngIf=\"showNoti\">\n  \tTest Notification\n  </div>\n\n  </span>\n\n\t<button md-icon-button [mdMenuTriggerFor]=\"menu\">\n  \t<md-icon>more_vert</md-icon>\n\t</button>\n\t<md-menu #menu=\"mdMenu\">\n\t\t<button md-menu-item (click)=\"goProfile()\">\n\t    <md-icon>account_circle</md-icon>\n\t    <span>Thông tin cá nhân</span>\n\t  </button>\n\t\t<!-- <button md-menu-item>\n\t    <md-icon>assignment</md-icon>\n\t    <span>Góc học tập</span>\n\t  </button> -->\n\t  <button md-menu-item (click)=\"logOut()\">\n\t    <md-icon>exit_to_app</md-icon>\n\t    <span>Đăng xuất</span>\n\t  </button>\n\t</md-menu>\n</div>"
+module.exports = "<span *ngIf=\"!isLogin\">\n\t<span routerLink=\"/login\" class=\"right-menu\">Log in</span>\n \t<!-- <span routerLink=\"/register\" class=\"right-menu\">Register</span> -->\n</span>\n\n<div *ngIf=\"isLogin\" class=\"right-menu\">\n\t<img class=\"avatar\" src=\"{{profile.imageUrl}}\"> \n\t<span style=\"vertical-align: middle; line-height: 64px;\">{{profile.name}}</span>\n\t<span style=\"position: relative;\">\n\t<button md-icon-button class=\"notification-container\" (click)=\"showNotify()\">\n    <!-- <md-icon>public</md-icon> -->\n    <md-icon>supervisor_account</md-icon>\n    <span class=\"notification-counter\"  *ngIf=\"requests.length>0\">{{requests.length}}\n    </span>\n  </button>\n  <div class=\"list-notify\" *ngIf=\"showNoti\">\n  \t<span class=\"caption\"> Friend Requests </span>\n  \t<hr>\n  \t<div class=\"caption\" *ngIf=\"requests.length==0\"> Chưa có yêu cầu nào </div>\n  \t<md-list *ngIf=\"requests.length>0\">\n\t\t  <md-list-item *ngFor=\"let item of requests\">\n\t\t  \t<app-user-item [user]=\"item\"></app-user-item>\n\t\t  </md-list-item>\n\t\t</md-list>\n  </div>\n\n  </span>\n\n\t<button md-icon-button [mdMenuTriggerFor]=\"menu\">\n  \t<md-icon>more_vert</md-icon>\n\t</button>\n\t<md-menu #menu=\"mdMenu\">\n\t\t<button md-menu-item (click)=\"goProfile()\">\n\t    <md-icon>account_circle</md-icon>\n\t    <span>Thông tin cá nhân</span>\n\t  </button>\n\t\t<!-- <button md-menu-item>\n\t    <md-icon>assignment</md-icon>\n\t    <span>Góc học tập</span>\n\t  </button> -->\n\t  <button md-menu-item (click)=\"logOut()\">\n\t    <md-icon>exit_to_app</md-icon>\n\t    <span>Đăng xuất</span>\n\t  </button>\n\t</md-menu>\n</div>"
 
 /***/ },
 
 /***/ 928:
 /***/ function(module, exports) {
 
-module.exports = "<h3 class=\"primary\"><md-icon>casino</md-icon> Tìm người chơi online bất kỳ</h3>\n<span class=\"numOfOnline\"> {{numOfOnline - 1}} người khác đang online</span>\n<div *ngIf=\"numOfOnline > 1\">\n\t<button style=\"margin-bottom: 10px;\" color=\"primary\" md-raised-button (click)=\"random()\">\n\t\t<md-icon>search</md-icon> Tìm đối thủ\n\t</button>\n\t<app-user-card *ngIf = \"randomUser\" [user]=\"randomUser\"></app-user-card>\n\t<button *ngIf = \"randomUser\" color=\"primary\" md-raised-button (click)=\"sendRequest()\">Gửi yêu cầu</button>\n</div>\n<!-- <div *ngIf=\"!numOfOnline||numOfOnline ==1\"> Chưa có người chơi online </div>\n -->"
+module.exports = "<h3 class=\"primary\"><md-icon>casino</md-icon> Random Opponent</h3>\n<span class=\"numOfOnline\"> {{numOfOnline - 1}} người khác đang online</span>\n<div *ngIf=\"numOfOnline > 1\">\n\t<button style=\"margin-bottom: 10px;\" color=\"primary\" md-raised-button (click)=\"random()\">\n\t\t<md-icon>search</md-icon> Search for a Player\n\t</button>\n\t<app-user-card *ngIf = \"randomUser\" [user]=\"randomUser\"></app-user-card>\n\t<button *ngIf = \"randomUser\" color=\"primary\" md-raised-button (click)=\"sendRequest()\">Gửi yêu cầu</button>\n</div>\n<!-- <div *ngIf=\"!numOfOnline||numOfOnline ==1\"> Chưa có người chơi online </div>\n -->"
 
 /***/ },
 
 /***/ 929:
 /***/ function(module, exports) {
 
-module.exports = "<md-input-container>\n  <input md-input placeholder=\"Search a friend\" [(ngModel)]=\"query\">\n</md-input-container>\n\n<button md-button color=\"primary\" (click)=\"search()\">Search</button>\n\n<div *ngIf=\"result\">\n\t<div class=\"caption\" *ngIf=\"result.length == 0 \"> 0 result</div>\n\t<div *ngFor=\"let item of result\">\n\t\t<app-user-item [user]=\"item\"></app-user-item>\n\t</div>\n</div>\n"
+module.exports = "<md-input-container>\n  <input md-input placeholder=\"Search a friend\" \n  [(ngModel)]=\"query\" (keyup)=\"onKey($event)\">\n</md-input-container>\n\n<!-- <button md-button color=\"primary\" (click)=\"search()\">Search</button> -->\n\n<div *ngIf=\"result\" class=\"search-result\">\n<!-- \t<div class=\"caption\" *ngIf=\"result.length == 0 \"> 0 result</div> -->\n\t<div *ngFor=\"let item of result\">\n\t\t<app-user-item [user]=\"item\"></app-user-item>\n\t</div>\n</div>\n"
 
 /***/ },
 
@@ -4051,7 +4105,7 @@ module.exports = "<div *ngIf=\"user\">\n\t<div class=\"avatar\">\n\t  <img md-ca
 /***/ 931:
 /***/ function(module, exports) {
 
-module.exports = "\n\t<md-card *ngIf=\"user\">\n\t  <md-card-header>\n\t    <div md-card-avatar>\n\t\t    <img md-card-avatar *ngIf=\"!user.imageUrl\" src=\"/assets/images/default-avatar.png\">\n\t\t    <img md-card-avatar *ngIf=\"user.imageUrl\" src=\"{{user.imageUrl}}\">\n\t    </div>\n\t    <md-card-title>{{user.name}}</md-card-title>\n\t    <md-card-subtitle>{{user.email}}</md-card-subtitle>\n\n\t    <button *ngIf=\"!user.isFriend&&!isMe&&!user.isRequest&&state!='isFriend'\" md-raised-button \n\t    \t(click)=\"createFriend()\"> \n\t    \tAdd Friend\n\t    </button>\n\t\n\t    <button *ngIf=\"state=='isFriend'||user.isFriend\" md-raised-button (click)=\"unfriend()\"> Unfriend\n\t    </button>\n\t    <button *ngIf=\"user.isRequest\" md-raised-button (click)=\"acceptRequest()\"> Accept\n\t    </button>\n\t    <md-icon *ngIf=\"user.isRequest\" mdTooltip=\"Ignore this!\" (click)=\"ignoreRequest()\" style=\"cursor: pointer;\">clear</md-icon>\n\t  </md-card-header>\n\t</md-card>\n"
+module.exports = "\n\t<md-card *ngIf=\"user\">\n\t  <md-card-header>\n\t    <div md-card-avatar>\n\t\t    <img md-card-avatar *ngIf=\"!user.imageUrl\" src=\"/assets/images/default-avatar.png\">\n\t\t    <img md-card-avatar *ngIf=\"user.imageUrl\" src=\"{{user.imageUrl}}\">\n\t    </div>\n\t    <md-card-title>{{user.name}}</md-card-title>\n\t    <md-card-subtitle>{{user.email}}</md-card-subtitle>\n\n\t    <button *ngIf=\"user.state==''&&!isMe\" \t\n\t       md-raised-button [disabled]=\"sendRequest\"\n\t    \t(click)=\"createFriend()\" > \n\t    \tAdd Friend\n\t    </button>\n\t    <button *ngIf=\"user.state=='isFriend'\" md-raised-button (click)=\"unfriend()\"> Unfriend\n\t    </button>\n\t    <button *ngIf=\"user.state=='isRequest'\" md-raised-button (click)=\"acceptRequest()\"> Accept\n\t    </button>\n\t    <md-icon *ngIf=\"user.state=='isRequest'\" mdTooltip=\"Ignore this!\" (click)=\"ignoreRequest()\" style=\"cursor: pointer;\">clear</md-icon>\n\t  </md-card-header>\n\t</md-card>\n"
 
 /***/ },
 
@@ -4072,7 +4126,7 @@ module.exports = "<md-card class=\"example-card\" *ngIf=\"word\">\n  <md-card-he
 /***/ 934:
 /***/ function(module, exports) {
 
-module.exports = "<div *ngIf=\"!isReady\" class=\"play-word\">\n  <app-my-friends [from]=\"from\" (selectFriend)=\"selectFriend($event)\">\n  </app-my-friends>\n  <div>\n   <!--  <button md-raised-button (click)=\"openDialog()\" [disabled]=\"!selectedFriend\" color=\"primary\">Bắt đầu\n    </button> -->\n    <button md-raised-button (click)=\"sendRequestSocket()\" [disabled]=\"!selectedFriend\" \n      color=\"primary\"> Challenge\n    </button>\n  </div>\n  <!-- <app-game-request (request)=\"request($event)\"></app-game-request> -->\n  <app-random-user (toUser)=\"toUser($event)\"></app-random-user>\n  <!-- <app-history></app-history> -->\n</div>\n<div class=\"play-word\" *ngIf=\"isReady\">\n  <div *ngIf=\"!isEnd\">\n  <md-progress-bar mode=\"determinate\" value=\"{{counter}}\" color=\"{{colorProgressbar}}\">\n  </md-progress-bar>\n  <app-game-player [from]=\"from\" [to]=\"to\"></app-game-player>\n    <app-circle-progress style=\"float: right;\"\n       [percent]=\"percent\"\n       [boxSize]=\"160\"\n       [radius]=\"40\"\n       [lowColor]=\"'#FFD54F'\"\n       [middleColor]=\"'orange'\"\n       [interColor]=\"'#f1c40f'\"\n       [highColor]=\"'#2196f3'\"\n       [border]=\"10\"\n       [time]=\"0\"\n      >\n    </app-circle-progress>\n    <p style=\"text-align: right;\">Question: {{this.count}}/{{max}}</p>\n    <app-reading [curWord]=\"curWord\" [allWords]=\"allWords\" [choices]=\"choices\" \n    *ngIf=\"selectedGame == 'reading'\"\n    (onCorrect)=\"onCorrect($event)\" (userAnswer)=\"userAnswer($event)\">\n    </app-reading>\n    <app-writing [curWord]=\"curWord\" *ngIf=\"selectedGame == 'writing' \"\n    (onCorrect)=\"onCorrect($event)\" (userAnswer)=\"userAnswer($event)\">\n    </app-writing>\n  </div>\n  <div *ngIf=\"isEnd\">\n    <app-game-player [from]=\"from\" [to]=\"to\"></app-game-player>\n    <app-my-answer [from]=\"from\" [to]=\"to\" [turnGame]=\"turn\" [isOnline]=\"onlineGame\" \n      [isRequest]=\"isRequest\" (goBack)=\"goBack($event)\" [isReceiver]=\"isReceiver\">\n    </app-my-answer>\n  </div>\n</div>\n"
+module.exports = "<div *ngIf=\"!isReady\" class=\"play-word\">\n  <app-my-friends [from]=\"from\" (selectFriend)=\"selectFriend($event)\">\n  </app-my-friends>\n  <div>\n   <!--  <button md-raised-button (click)=\"openDialog()\" [disabled]=\"!selectedFriend\" color=\"primary\">Bắt đầu\n    </button> -->\n    <button md-raised-button (click)=\"sendRequestSocket()\" [disabled]=\"!selectedFriend\" \n      color=\"primary\"> Challenge\n    </button>\n  </div>\n  <!-- <app-game-request (request)=\"request($event)\"></app-game-request> -->\n  <app-random-user (toUser)=\"toUser($event)\"></app-random-user>\n  <app-history></app-history>\n</div>\n<div class=\"play-word\" *ngIf=\"isReady\">\n  <div *ngIf=\"!isEnd\">\n  <md-progress-bar mode=\"determinate\" value=\"{{counter}}\" color=\"{{colorProgressbar}}\">\n  </md-progress-bar>\n  <app-game-player [from]=\"from\" [to]=\"to\"></app-game-player>\n    <app-circle-progress style=\"float: right;\"\n       [percent]=\"percent\"\n       [boxSize]=\"160\"\n       [radius]=\"40\"\n       [lowColor]=\"'#FFD54F'\"\n       [middleColor]=\"'orange'\"\n       [interColor]=\"'#f1c40f'\"\n       [highColor]=\"'#2196f3'\"\n       [border]=\"10\"\n       [time]=\"0\"\n      >\n    </app-circle-progress>\n    <p style=\"text-align: right;\">Question: {{this.count}}/{{max}}</p>\n    <app-reading [curWord]=\"curWord\" [allWords]=\"allWords\" [choices]=\"choices\" \n    *ngIf=\"selectedGame == 'reading'\"\n    (onCorrect)=\"onCorrect($event)\" (userAnswer)=\"userAnswer($event)\">\n    </app-reading>\n    <app-writing [curWord]=\"curWord\" *ngIf=\"selectedGame == 'writing' \"\n    (onCorrect)=\"onCorrect($event)\" (userAnswer)=\"userAnswer($event)\">\n    </app-writing>\n  </div>\n  <div *ngIf=\"isEnd\">\n    <app-game-player [from]=\"from\" [to]=\"to\"></app-game-player>\n    <app-my-answer [from]=\"from\" [to]=\"to\" [turnGame]=\"turn\" [isOnline]=\"onlineGame\" \n      [isRequest]=\"isRequest\" (goBack)=\"goBack($event)\" [isReceiver]=\"isReceiver\">\n    </app-my-answer>\n  </div>\n</div>\n"
 
 /***/ },
 
@@ -4107,7 +4161,7 @@ module.exports = "<div class=\"game-box\">\n  <div class=\"game-unit\"> &nbsp;\n
 /***/ 939:
 /***/ function(module, exports) {
 
-module.exports = "<md-tab-group>\n  <md-tab label=\"Thông tin cơ bản\">\n  \t<div class=\"flex-container game-box\" \n     fxLayout=\"row\" \n     fxLayoutAlign=\"center center\" \n    \t>\n\t\t  <div class=\"flex-item profile\" fxFlex=\"30%\">\n\t\t    <img md-card-avatar *ngIf=\"!profile.imageUrl\" \n\t\t\t\t  src=\"/assets/images/default-avatar.png\">\n\t\t\t  <img md-card-avatar *ngIf=\"profile.imageUrl\" \n\t\t\t\t  src=\"{{profile.imageUrl}}\">\n\t\t  </div>\n\t\t  <div class=\"flex-item\" fxFlex=\"70%\">\n\t\t  \t<p>Name: {{profile.name}}</p>\n  \t\t\t<p>Email: {{profile.email}}</p>\n\t\t  </div>\n\t\t</div> \n    </md-tab>\n  <md-tab label=\"Bạn bè\">\n  <div class=\"flex-container game-box\" \n     fxLayout=\"row\" \n     fxLayoutAlign=\"space-around start\" \n    >\n    <div class=\"flex-item\" fxFlex=\"50%\">\n\t\t  <p> Bạn bè của tôi </p>\n\t\t  \t<div *ngIf=\"friends.length == 0\" class=\"caption\">Bạn chưa có bạn.</div>\n\t\t\t  <div *ngIf=\"friends.length > 0\">\n\t\t\t  \t<div *ngFor=\"let item of friends\">\n\t\t\t  \t\t<app-user-item [user]=\"item\"></app-user-item>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t</div>\n\t\t\t<div class=\"flex-item\" fxFlex=\"50%\">\n\t\t\t\t<p>Tìm kiếm thêm bạn:</p>\n\t\t\t\t<md-icon>search</md-icon>\n\t\t\t\t<app-search-friend></app-search-friend>\n\t\t\t</div>\n\t\t</div>\n  </md-tab>\n\n  <md-tab label=\"Yêu cầu kết bạn\">\n  \t<div *ngIf=\"noRequest\" class=\"caption\"> 0 yêu cầu</div>\n  \t<div *ngIf=\"requests\">\n\t  \t<div *ngFor=\"let item of requests\">\n\t  \t\t<app-user-item [user]=\"item\"></app-user-item>\n\t\t\t</div>\n\t\t</div>\n  </md-tab>\n</md-tab-group>\n\n\n\n"
+module.exports = "<div class=\"profile\">\n<h3 class=\"primary\"><md-icon>info_outline</md-icon> Personal Information </h3>\n<div class=\"flex-container game-box\" \n     fxLayout=\"row\" \n     fxLayoutAlign=\"center center\" \n    \t>\n\t\t  <div class=\"flex-item profile\" fxFlex=\"30%\">\n\t\t    <img md-card-avatar *ngIf=\"!profile.imageUrl\" \n\t\t\t\t  src=\"/assets/images/default-avatar.png\">\n\t\t\t  <img md-card-avatar *ngIf=\"profile.imageUrl\" \n\t\t\t\t  src=\"{{profile.imageUrl}}\">\n\t\t  </div>\n\t\t  <div class=\"flex-item\" fxFlex=\"70%\">\n\t\t  \t<p>Name: {{profile.name}}</p>\n  \t\t\t<p>Email: {{profile.email}}</p>\n\t\t  </div>\n</div> \n\n\t<div class=\"flex-container game-box\" \n\t     fxLayout=\"row\" fxLayout.xs=\"column\" fxLayout.sm=\"row\" \n\t     fxLayoutAlign=\"space-around start\">\n\t  <div class=\"flex-item\" fxFlex=\"50%\">\n\t  \t<h3 class=\"primary\"><md-icon>people_outline</md-icon> My friends</h3>\n\t  </div>\n\t\t<div class=\"flex-item search-box\" fxFlex=\"50%\">\n\t\t\t<md-icon>search</md-icon>\n\t\t\t<app-search-friend></app-search-friend>\n\t\t</div>\n\t</div>\n\t<div>\n\t  \t<div *ngIf=\"friends.length == 0\" class=\"caption\">Bạn chưa có bạn.</div>\n\t\t  <div *ngIf=\"friends.length > 0\">\n\t\t  \t<div *ngFor=\"let item of friends\">\n\t\t  \t\t<app-user-item [user]=\"item\"></app-user-item>\n\t\t\t\t</div>\n\t\t\t</div>\n\t</div>\n</div>\n\n\n\n\n"
 
 /***/ },
 
@@ -4116,7 +4170,7 @@ module.exports = "<md-tab-group>\n  <md-tab label=\"Thông tin cơ bản\">\n  \
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(64);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return UserService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
