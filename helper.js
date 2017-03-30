@@ -234,12 +234,11 @@ class Helper {
   * Method to accept friend
   */
 	acceptRequest(fromId, toId, callback) {
-		this.friend.findOneAndUpdate({ $and: [
+		this.friend.findOneAndRemove({ $and: [
 			{ from: fromId }, 
 			{ to: toId }
 		]}, 
-		{ $set: { confirmed: true }},	(err, friend) => {
-
+		(err, friend) => {
 			this.user.findOneAndUpdate({
 				_id: fromId
 			}, 
@@ -253,7 +252,6 @@ class Helper {
 					}, 
 					{ $push: { list_friend: fromId } },
 					function (err, friendY) {
-						//xóa thành công
 						callback(err, true);
 					});		
 				}

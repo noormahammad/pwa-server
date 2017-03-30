@@ -73,7 +73,6 @@ exports = module.exports = function(io){
 		});
 
 		socket.on('unfriend', (data) => {
-			console.log(data);
 			fromId = data['from']['_id'];
 			toId = data['to']['_id'];
 			data['from']['state'] = '';
