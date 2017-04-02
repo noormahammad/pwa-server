@@ -7,6 +7,6 @@ var WordSchema = new Schema({
   meaning: String,
   sound_us: String,
   sound_uk: String
-}, {collection: 'words'});
+}, { collection: 'words' });
 
 module.exports = mongoose.model('Word', WordSchema);

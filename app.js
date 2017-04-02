@@ -10,8 +10,6 @@ var users = require('./routes/users');
 var words = require('./routes/words');
 var friends = require('./routes/friends');
 var games = require('./routes/games');
-var realtime = require('./routes/realtime');
-
 
 var app = express();
 var server = require('http').createServer(app);  
@@ -23,8 +21,6 @@ var port =  process.env.PORT || 3000;
 server.listen(port);  
 
 var mongoose = require('mongoose');
-//var db = 'mongodb://trang2uet:pwa@ds049631.mlab.com:49631/pwa';
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -58,8 +54,6 @@ app.use('/users', users);
 app.use('/words', words);
 app.use('/friends', friends);
 app.use('/api/games', games);
-app.use('/api/realtime', realtime);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -78,7 +72,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error.html');
 });
-
-
 
 module.exports = {app: app, server: server};

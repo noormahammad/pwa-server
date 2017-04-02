@@ -49,38 +49,5 @@ class Mather {
     }
     return choices;
   }
-
-  countInArray(arr) {
-    if (arr.length == 0) return [];
-    let newArr = [];
-    var temp = {};
-    temp['fromId'] = arr[0]['from']['id']['_id'];
-    temp['winFrom'] = 0;
-    temp['winTo'] = 0;
-    if(arr[0]['from']['score'] > arr[0]['to']['score']) temp['winFrom'] = 1;
-    else temp['winTo'] = 1;
-    newArr.push(temp);
-
-    for (let i = 1; i < arr.length; i ++) {
-      for (let j = 0; j < newArr.length; j++) {
-        //nếu có rồi, thì tính số thắng hay thua
-        if (newArr[j]['fromId'] == arr[i]['from']['id']['_id']) {
-          if(arr[i]['from']['score'] > arr[i]['to']['score']) newArr[j]['winFrom']++;
-          else newArr[j]['winTo']++; 
-        } else {
-          var temp = {};
-          temp['fromId'] = arr[i]['from']['id'];
-          temp['winFrom'] = 0;
-          temp['winTo'] = 0;
-          if(arr[i]['from']['score'] > arr[i]['to']['score']) temp['winFrom'] = 1;
-          else temp['winTo'] = 1;
-          newArr.push(temp);
-        }
-      }
-    }
-    return newArr;
-  }
-  
-
 }
 module.exports = new Mather();

@@ -8,7 +8,7 @@ var options = { server: { socketOptions: { keepAlive: 900000, connectTimeoutMS: 
 mongoose.Promise = global.Promise;
 mongoose.connect(url, options, function (error, db) {
   if (error) {
-      console.log(error);
+    console.log(error);
   }
 });
 

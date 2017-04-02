@@ -3,18 +3,6 @@ var router = express.Router();
 
 var Game = require('../models/game.model.js');
 
-
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send('Games');
-});
-
-router.post('/test', function(req, res, next) {
-  res.send(req.body);
-});
-
-
 router.post('/create', function(req, res, next) {
 	Game.create(req.body, function(err, newGame) {
 		if (err) {
@@ -43,7 +31,6 @@ router.post('/update/:id', function(req, res, next) {
 			res.send(game);
 		}
 	});
-	
 });
 
 router.get('/request/:id', function(req, res, next) {

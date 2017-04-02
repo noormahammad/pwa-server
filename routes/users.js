@@ -7,10 +7,9 @@ var User = require('../models/user.model.js');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   User.find(function(err, users) {
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
         if (err)
             res.send(err)
-        res.render('pages/user.ejs', { users: users }); // return all reviews in JSON format
+        res.render('pages/user.ejs', { users: users });
     });
 });
 
@@ -77,7 +76,6 @@ router.get('/search/:input', function(req, res) {
 		if(err) {
 			res.json(null);
 		} else {
-			//console.log(users);
 			res.json(users);
 		}
 	})
@@ -126,27 +124,4 @@ router.get('/api/delete/:id', function(req, res) {
 	});
 });
 
-router.get('/api/addfriend/test', function(req, res) {
-	User.findOne({
-		email: 'killalltolive@gmail.com'
-	})
-	.exec(function(err, user) {
-		if(err) {
-			res.json(null);
-		} else {
-			User.findOneAndUpdate({
-				email: 'trangjtwya@gmail.com'
-			}, 
-			{ $push: { list_friend: user._id}},
-			function (err, newUser) {
-				if(err) {
-					res.send(err);
-				} else {
-					res.send(newUser);
-				}
-			});
-		}
-	})
-		
-})
 module.exports = router;
