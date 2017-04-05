@@ -15,16 +15,16 @@ router.get('/', function(req, res, next) {
 
 // Get all users
 router.get('/all', function(req, res) {
-    // use mongoose to get all words in the database
     User.find(function(err, users) {
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
         if (err)
             res.send(err)
-        res.json(users); // return all reviews in JSON format
+        res.json(users);
     });
 });
 
-router.post('/api/create', function(req, res) {
+
+//Create new user
+router.post('/create', function(req, res) {
 	User.create(req.body, function(err, user) {
 		if (err) {
 			res.send('error saving word');
@@ -35,12 +35,16 @@ router.post('/api/create', function(req, res) {
 });
 
 
-//edit information of user
-router.post('/edit/:email', function(req, res) {
+//update information of user if user is not exist, create new user
+router.post('/edit/:email/:method', function(req, res) {
 	User.findOneAndUpdate({
-		email: req.params.email
+		email: req.params.email,
+		method: req.params.method
 	},
-	req.body, {new: true},
+	{ $set: {
+		name: req.body.name,
+		imageUrl: req.body.imageUrl
+	}}, { upsert: true, new: true },
 	function (err, user) {
 		if(err) {
 			res.send(err);
@@ -49,20 +53,6 @@ router.post('/edit/:email', function(req, res) {
 		}
 	});
 });
-
-router.get('/api/:email', function(req, res) {
-	User.findOne({
-		email: req.params.email
-	})
-	.exec(function(err, user) {
-		if(err) {
-			res.json(null);
-		} else {
-			res.json(user);
-		}
-	})
-});
-
 
 //find users has email container input
 router.get('/search/:input', function(req, res) {

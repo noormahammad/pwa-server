@@ -50,7 +50,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/api/users', users);
 app.use('/words', words);
 app.use('/friends', friends);
 app.use('/api/games', games);

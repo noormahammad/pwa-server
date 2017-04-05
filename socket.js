@@ -13,6 +13,24 @@ exports = module.exports = function(io){
       io.to(socket.id).emit('get-info-socket', socket.id);
     });
 
+    /* 
+     * Online Games
+     */
+    socket.on('go-play-word', () => {
+      helper.changeStatus(userId, true, (err, user) => {
+        //Change sum online
+        helper.getSumOnline((err, count) => {
+          io.emit('sum-online', count);
+        });
+        //Add to online of friend
+        socket.broadcast.emit('friend-list-response', {
+          singleUser: true,
+          userDisconnected : false, 
+          list_friend: user
+        });
+      });
+    });
+
     socket.on('create-friend', (data) => {
       helper.createFriend(data, (err, friend) => {
         if (err) return;
@@ -97,25 +115,7 @@ exports = module.exports = function(io){
         io.to(socket.id).emit('search-user-response', result);
       });
     });
-
-    /* 
-     * Online Games
-     */
-    socket.on('go-play-word', () => {
-      helper.changeStatus(userId, true, (err, user) => {
-        //Change sum online
-        helper.getSumOnline((err, count) => {
-          io.emit('sum-online', count);
-        });
-        //Add to online of friend
-        socket.broadcast.emit('friend-list-response', {
-          singleUser: true,
-          userDisconnected : false, 
-          list_friend: user
-        });
-      });
-    });
-    
+  
     socket.on('friend-list', (userId) => {
       helper.getUser(userId, (err, user) => {
         io.to(socket.id).emit('friend-list-response', {
@@ -128,7 +128,6 @@ exports = module.exports = function(io){
 
     socket.on('send-request', (request) => {
       let toSocketId = request.toSocketId;
-        console.log('To player: ' + toSocketId);
       request['fromSocketId'] = socket.id;
       //trạng thái đợi chấp thuận
       io.to(socket.id).emit('wait-accept', "đang đợi đồng ý");
@@ -169,7 +168,7 @@ exports = module.exports = function(io){
     /*
      * Đối thủ không trả lời. Gửi event kết thúc.
      * Gửi yêu cầu kết thúc để xóa dialog hiện lên bên đối thủ
-    */
+     */
     socket.on('finish-request', (data) => {
       data['close'] = true;
       io.to(data['toSocketId']).emit('close-dialog', data);
@@ -198,9 +197,8 @@ exports = module.exports = function(io){
       } else {
         data['isWinner'] = data.player2.id;
       }
-      //find có score lớn hơn rồi cho vào database
       helper.updateHistory(data, (err, result) => {
-        console.log(result);
+        //console.log(result);
       });
     });
 
@@ -208,24 +206,6 @@ exports = module.exports = function(io){
       console.log('close window' + userId);
       helper.changeStatus(userId, false, (err, user) => {
         socket.broadcast.emit('friend-list-response', {
-          error : false ,
-          userDisconnected : true, 
-          singleUser: true,
-          list_friend: user
-        });
-        helper.getSumOnline((err, count) => {
-          io.emit('sum-online', count);
-        });
-        // helper.changeOnApp(userId, false, (err, user) => {
-        //   console.log('isOnApp: ' + user.onApp);
-        // });
-      });   
-    });
-
-    socket.on('logout-game',(userId) => {
-      helper.changeStatus(userId, false, (err, user) => {
-        socket.broadcast.emit('friend-list-response', {
-          error : false ,
           userDisconnected : true, 
           singleUser: true,
           list_friend: user
@@ -239,7 +219,6 @@ exports = module.exports = function(io){
     socket.on('logout',(userId) => {
       helper.changeStatus(userId, false, (err, user) => {
         socket.broadcast.emit('friend-list-response', {
-          error : false ,
           userDisconnected : true, 
           singleUser: true,
           list_friend: user
@@ -247,9 +226,6 @@ exports = module.exports = function(io){
         helper.getSumOnline((err, count) => {
           io.emit('sum-online', count);
         });
-        // helper.changeOnApp(userId, false, (err, user) => {
-        //   console.log('isOnApp: ' + user.onApp);
-        // });
       });   
     });
   });
