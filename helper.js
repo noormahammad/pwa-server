@@ -6,7 +6,6 @@ class Helper {
     this.user = require('./models/user.model.js');
     this.friend = require('./models/friend.model.js');
     this.word = require('./models/word.model.js');
-    this.game = require('./models/game.model.js');
     this.history = require('./models/history.model.js');
   }
 
@@ -98,20 +97,6 @@ class Helper {
     });
   }
 
-  changeOnApp(userId, status, callback) {
-    this.user.findOneAndUpdate({
-      _id: userId
-    },
-    { 
-      $set: { 
-      'onApp': status,
-      }
-    }, {new: true},
-    function (err, user) {
-      callback(err, user);
-    });
-  }
-
   changeStatus(userId, status, callback) {
     this.user.findOneAndUpdate({
       _id: userId
@@ -134,20 +119,6 @@ class Helper {
     .exec(function(err, user) {
       callback(err, user.list_friend);
     });
-  }
-
-  getHistory(userId, callback) {
-    this.game.find({ $and: [{
-      'to.id': userId
-    }, {
-      'played': true
-    }] })
-    .populate('from.id')
-    .exec( function(err, games) {
-      let result = mather.countInArray(games);
-      callback(err, result);
-    });
-  //aggrerate
   }
 
   createFriend(data, callback) {
@@ -182,13 +153,48 @@ class Helper {
         }, 
         { $pull: { list_friend: fromId } },
         function (err, friend) {
-          //xóa thành công
           callback(err, true);
         });   
       }
     });
   }
 
+  checkValidRequest(userId, friendId, callback){
+    this.user.findOne({
+      _id: userId
+    })
+    .exec((err, user) => {
+      var result = {};
+      if(user.list_friend.indexOf(friendId) >=0) {
+        result['status'] = 'invalid';
+        result['type'] = 'friend';
+        callback(err, result);
+      } else {
+        this.friend.find({ 
+          $and: [
+          {
+            confirmed: false
+          }, {
+            from: userId
+          }]
+        })
+        .exec((err, request) => {
+          var myRequests = [];
+          for (var i = 0; i < request.length; i++){
+            myRequests.push(request[i].to);
+          }
+          if(myRequests.indexOf(friendId) >= 0) {
+            result['status'] = 'invalid';
+            result['type'] = 'request';
+            callback(err, result);
+          } else {
+            result['status'] = 'valid';
+            callback(err, result);
+          }
+        });
+      }
+    }); 
+  }
 
  /* 
   * Method to get friendship request

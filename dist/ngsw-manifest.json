@@ -1,0 +1,54 @@
+{
+  "routing": {
+    "index": "/index.html",
+    "routes": {
+      "/": {
+        "prefix": false
+      },
+      "/some/routes-group-prefix": {
+        "prefix": true
+      },
+      "/some/specific-route": {
+        "prefix": false
+      }
+    }
+  },
+  "static": {
+    "urls": {
+      "/main.e6772306957f3d117261.bundle.js": "f30e03fa620c30c7d2468a4bb819c17090552823",
+      "/polyfills.cb56bfcd290d4da133e6.bundle.js": "e3bdadb1cba3de4a27a5510c8fc6a8a637338c88",
+      "/sw-register.86a9be57c2122660cda4.bundle.js": "d307df289a81139d2ff9e0ff9dc83af9b5f71b9d",
+      "/vendor.8771dbb408e87535154c.bundle.js": "86a4b8011341dec7a221835b6edd9b554113c44b",
+      "/inline.d6816384cf8817397468.bundle.js": "6c6aad887575f499fbd75976a27d3c1e2e9c1ca5",
+      "/styles.4bb9481bc4c8c4f3f469.bundle.css": "ad01a31def86170dbdde7a07a79452329997deb4",
+      "/assets/icons/android/android-chrome-192x192.png": "56cb78ee9a2914590290ce74a86f0e9ab699b1af",
+      "/assets/icons/apple/apple-touch-icon.png": "b24676550fdc8543dcd560bbc02ab17040d3c761",
+      "/assets/icons/chrome/favicon-16x16.png": "59c62403577ebb7f393e0fa5ea0775e63f230035",
+      "/assets/icons/chrome/favicon-32x32.png": "d92a391aaef4fda5d7113e67ec382324312817a8",
+      "/assets/icons/chrome/favicon.ico": "f3f51a5bb0040a8e399495ac709c7ca98daca6c8",
+      "/assets/icons/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
+      "/assets/icons/chrome/mstile-150x150.png": "2175a4db80a00a20fed146879116d33a951a4980",
+      "/assets/icons/manifoldjs/Square150x150Logo.scale-100.png": "caaad9438507c6411b54360cc5244846ed191621",
+      "/assets/icons/manifoldjs/Square44x44Logo.scale-100.png": "cb58f98e281b4bebdcd8eeb3cea0d60afc3755f8",
+      "/assets/icons/manifoldjs/StoreLogo.scale-100.png": "334a577d396f83d70d824dee8b02a2ad013654d7",
+      "/assets/images/1000word.jpg": "9244f70bf768af0f753d1413ef7264c4265325da",
+      "/assets/images/default-avatar.png": "f93efa6ffdd686bb2043442d852cafc52e9d97f7",
+      "/assets/images/demo.PNG": "32bb55a6cea5fcc553e0f932d109d180eb64d771",
+      "/assets/images/game/game.png": "615ec4d08c2a96a8a7fd0855d1defdeecff98cdb",
+      "/assets/images/learn.png": "6173cf1ff278173c01d52f5040e5f16b8dcad666",
+      "/assets/images/number/number-01.png": "9e389dfc6feb95bf1596f0f711abcf958bd9134a",
+      "/assets/images/number/number-02.png": "ce20a30c2a14cd14d64f0f0d0a17bd4c2a80998d",
+      "/assets/images/number/number-03.png": "555c8a8c5acb861a1a2142795e2da2785e44c826",
+      "/assets/images/number/number-04.png": "ec21d1695647a0b5aacc37f69c0fd1fe9a5e3344",
+      "/assets/images/number/number-05.png": "1bfbaa301b76057bae4a6dc3415aa479ffeb5315",
+      "/assets/images/number/number-06.png": "00276e63c3da64499aaae3194c973c9d7053419c",
+      "/assets/lib/api_client.js": "a7d6ef83c232308b24a9386304d93291f4189f82",
+      "/assets/lib/api.js": "0587d98ae78cf6ca32c68889b975d157cb8f513e",
+      "/assets/lib/platform.js": "529cd2a43cdb3072aed24cda86075a73a86c8337",
+      "/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
+      "/manifest.json": "c6f73afb5ed14d5eb6e5dc28a24d8cf62265a9e9",
+      "/index.html": "c8efb15d7d7671ff3b8f05bbfbd4e413911c18d4"
+    },
+    "_generatedFromWebpack": true
+  }
+}

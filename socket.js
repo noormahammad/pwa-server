@@ -32,13 +32,21 @@ exports = module.exports = function(io){
     });
 
     socket.on('create-friend', (data) => {
-      helper.createFriend(data, (err, friend) => {
-        if (err) return;
-        if (friend == null) {
-          return;
-        } 
-        io.to(data['toSocketId']).emit('create-friend-request', data);
-      })
+      helper.checkValidRequest(userId, data['to'], (err, res) => {
+        if(res['status'] == 'valid') {
+          helper.createFriend(data, (err, friend) => {
+            if (err) return;
+            if (friend == null) {
+              return;
+            } 
+            io.to(data['toSocketId']).emit('create-friend-request', data);
+          });
+        } else {
+          if(res['status'] == 'invalid') {
+            io.to(socket.id).emit('invalid-request', res);
+          }
+        }        
+      });
     });
 
     socket.on('friendship-request', (usedId) => {
@@ -47,7 +55,6 @@ exports = module.exports = function(io){
       });
     });
     
-
     /*
      * Accept request friend, have a new friend
      */
@@ -185,6 +192,12 @@ exports = module.exports = function(io){
       });
     });
 
+    socket.on('get-sum-online', () => {
+      helper.getSumOnline((err, count) => {
+        io.emit('sum-online', count);
+      });
+    })
+
     socket.on('history', (data) => {
       helper.getHistory(userId, (err, games) => {
         io.to(socket.id).emit('history-response', games);
@@ -192,14 +205,19 @@ exports = module.exports = function(io){
     });
 
     socket.on('save-history', (data) => {
-      if(data.player1.win >= data.player2.win) {
-        data['isWinner'] = data.player1.id;
+      if(data.player1.win == data.player2.win) {
+        data['isWinner'] = 0;
       } else {
-        data['isWinner'] = data.player2.id;
+        if(data.player1.win > data.player2.win) {
+          data['isWinner'] = data.player1.id;
+        } else {
+          data['isWinner'] = data.player2.id;
+        }
+        helper.updateHistory(data, (err, result) => {
+          //console.log(result);
+        });
       }
-      helper.updateHistory(data, (err, result) => {
-        //console.log(result);
-      });
+     
     });
 
     socket.on('disconnect', () => {
