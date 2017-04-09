@@ -9,11 +9,10 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta name="google-signin-client_id" content="736288713251-26srbi81jha5n1aithe4av668oh5pn12.apps.googleusercontent.com">
- <!--  <script src="assets/lib/platform.js" async defer></script>
-  <script src="assets/lib/api.js"></script>
-  <script src="assets/lib/api_client.js"></script> -->
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <script src="https://apis.google.com/js/api:client.js"></script>
+  <script src="assets/lib/platform.js" async defer></script>
+  <script src="assets/lib/api-client.js"></script>
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://apis.google.com/js/api:client.js"></script> -->
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
   <link rel="manifest" href="manifest.json">
@@ -22,5 +21,16 @@
 <body>
   <app-root>Loading...</app-root>
   <script src="//connect.facebook.net/en_US/sdk.js"></script>
-<script type="text/javascript" src="inline.d6816384cf8817397468.bundle.js"></script><script type="text/javascript" src="polyfills.cb56bfcd290d4da133e6.bundle.js"></script><script type="text/javascript" src="sw-register.86a9be57c2122660cda4.bundle.js"></script><script type="text/javascript" src="vendor.8771dbb408e87535154c.bundle.js"></script><script type="text/javascript" src="main.e6772306957f3d117261.bundle.js"></script></body>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }).catch(function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  }
+</script>
+<script type="text/javascript" src="inline.8cea5242ce5b0e75c827.bundle.js"></script><script type="text/javascript" src="polyfills.f130e2bc57dae177aad5.bundle.js"></script><script type="text/javascript" src="vendor.f396cef417ffafe0aec8.bundle.js"></script><script type="text/javascript" src="main.1ddb78b856a5f17f1b6f.bundle.js"></script></body>
 </html>
