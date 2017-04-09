@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["assets/icons/favicon.ico","b9aa7c338693424aae99599bec875b5f"],["assets/images/1000word.jpg","50924cdaee0c4edabe3a682dcb844b5b"],["assets/images/default-avatar.png","5097b0247a92d47178df598b82944f15"],["assets/images/demo.PNG","f388e8b988d83510f4a0a80dd69a2693"],["assets/images/game.png","5fb21137d2d7150621161311b480d0a0"],["assets/images/learn.png","4b1c21ce4f89d76ece0f61cf16969214"],["assets/lib/api-client.js","7114666e305ab9f38da881fcf577f5ee"],["assets/lib/platform.js","8a5d30976eba3236aa794ddb7f32f38c"],["index.html","862dcee2eef18b8ff47398a80a330d4e"],["inline.8cea5242ce5b0e75c827.bundle.js","cbafef8c943103acccb200d733921591"],["main.1ddb78b856a5f17f1b6f.bundle.js","de00f888ed49d65d93241c81f0c9e6e1"],["polyfills.f130e2bc57dae177aad5.bundle.js","399e29909ee6620d0c3b9ba1ca6e7054"],["styles.4bb9481bc4c8c4f3f469.bundle.css","4bb9481bc4c8c4f3f4695b7722454ed4"],["vendor.f396cef417ffafe0aec8.bundle.js","73accd2d57c80031af6936545b9cd4a7"]];
+var precacheConfig = [["assets/icons/favicon.ico","b9aa7c338693424aae99599bec875b5f"],["assets/images/1000word.jpg","50924cdaee0c4edabe3a682dcb844b5b"],["assets/images/default-avatar.png","5097b0247a92d47178df598b82944f15"],["assets/images/demo.PNG","f388e8b988d83510f4a0a80dd69a2693"],["assets/images/game.png","5fb21137d2d7150621161311b480d0a0"],["assets/images/learn.png","4b1c21ce4f89d76ece0f61cf16969214"],["assets/lib/api-client.js","7114666e305ab9f38da881fcf577f5ee"],["assets/lib/platform.js","8a5d30976eba3236aa794ddb7f32f38c"],["index.html","a1ca7a83bff8fd5ce9c935ce67c20280"],["inline.43dcfcb720a4f3d3cf73.bundle.js","ad6df06fbb1fa92fcb23a2012a20bb7b"],["main.0abc0c8488e2fabfe802.bundle.js","18124ba4024786613d34d621123d5a6d"],["polyfills.f130e2bc57dae177aad5.bundle.js","399e29909ee6620d0c3b9ba1ca6e7054"],["styles.4bb9481bc4c8c4f3f469.bundle.css","4bb9481bc4c8c4f3f4695b7722454ed4"],["vendor.f396cef417ffafe0aec8.bundle.js","73accd2d57c80031af6936545b9cd4a7"]];
 var cacheName = 'sw-precache-v3-sw-precache-' + (self.registration ? self.registration.scope : '');
 
 
@@ -283,7 +283,7 @@ self.addEventListener('fetch', function(event) {
 
 // Runtime cache configuration, using the sw-toolbox library.
 
-toolbox.router.get(/localhost\:3000/, toolbox.networkFirst, {});
+toolbox.router.get(/englishgame-uet\.herokuapp\.com/, toolbox.networkFirst, {});
 
 
 
