@@ -1,5 +1,5 @@
 ## Demo
-[https://englishgame-uet.herokuapp.com](https://englishgame-uet.herokuapp.com)
+[https://egame-uet.herokuapp.com](https://egame-uet.herokuapp.com)
 ## Install and run app
 Clone this project
 ```
