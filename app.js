@@ -42,6 +42,13 @@ app.use(function(req, res, next) {
    next();
 });
 
+app.use(function requireHTTPS(req, res, next) {
+  if (!req.secure && req.headers.host.indexOf('localhost') < 0) {
+    return res.redirect('https://' + req.headers.host + req.url);
+  }
+  next();
+})
+
 app.use(function(req, res, next){
   res.io = io;
   next();
