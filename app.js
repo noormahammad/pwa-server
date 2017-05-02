@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(function requireHTTPS(req, res, next) {
-  if (!req.secure && req.headers.host.indexOf('localhost') < 0) {
+  if (!req.secure) {
     return res.redirect('https://' + req.headers.host + req.url);
   }
   next();
