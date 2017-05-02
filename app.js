@@ -36,6 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'dist')));
 
+app.use(ensureSecure);
 app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
    res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
@@ -43,10 +44,8 @@ app.use(function(req, res, next) {
    next();
 });
 
-app.all('*', ensureSecure);
-
 function ensureSecure(req, res, next){
-  if(req.headers["x-forwarded-proto"] === "https" || req.hostname == 'localhost'){
+  if(req.protocol == "https" || req.hostname == 'localhost'){
   // OK, continue
     return next();
   };
