@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var requireHTTPS = require('https');
+var compression = require('compression');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -25,12 +26,15 @@ var mongoose = require('mongoose');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.engine('html',require('ejs').renderFile);
+
+// compress all responses
+app.use(compression());
 app.use(function requireHTTPS(req, res, next) {
   if(req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {  
     return res.redirect('https://' + req.headers.host + req.url);
   }
   next();
-})
+});
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
