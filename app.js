@@ -36,7 +36,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'dist')));
 
-app.use(ensureSecure);
 app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
    res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
@@ -44,15 +43,12 @@ app.use(function(req, res, next) {
    next();
 });
 
-function ensureSecure(req, res, next){
-  if(req.protocol == "https" || req.hostname == 'localhost'){
-  // OK, continue
-    return next();
-  };
-  res.redirect('https://'+req.hostname+req.url);
-};
-
-
+app.use(function requireHTTPS(req, res, next) {
+  if(req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {  
+    return res.redirect('https://' + req.headers.host + req.url);
+  }
+  next();
+})
 
 app.use(function(req, res, next){
   res.io = io;
