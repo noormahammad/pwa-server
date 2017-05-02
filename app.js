@@ -43,12 +43,17 @@ app.use(function(req, res, next) {
    next();
 });
 
-app.use(function requireHTTPS(req, res, next) {
-  if (!req.secure && req.headers.host.indexOf('localhost') < 0) {
-    return res.redirect('https://' + req.headers.host + req.url);
-  }
-  next();
-})
+app.all('*', ensureSecure);
+
+function ensureSecure(req, res, next){
+  if(req.headers["x-forwarded-proto"] === "https" || req.hostname == 'localhost'){
+  // OK, continue
+    return next();
+  };
+  res.redirect('https://'+req.hostname+req.url);
+};
+
+
 
 app.use(function(req, res, next){
   res.io = io;
