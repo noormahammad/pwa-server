@@ -25,6 +25,12 @@ var mongoose = require('mongoose');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.engine('html',require('ejs').renderFile);
+app.use(function requireHTTPS(req, res, next) {
+  if(req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {  
+    return res.redirect('https://' + req.headers.host + req.url);
+  }
+  next();
+})
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -42,13 +48,6 @@ app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
    next();
 });
-
-app.use(function requireHTTPS(req, res, next) {
-  if(req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {  
-    return res.redirect('https://' + req.headers.host + req.url);
-  }
-  next();
-})
 
 app.use(function(req, res, next){
   res.io = io;
