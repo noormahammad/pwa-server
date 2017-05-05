@@ -170,6 +170,7 @@ class Helper {
         result['type'] = 'friend';
         callback(err, result);
       } else {
+        //Check if user sent friendId before
         this.friend.find({ 
           $and: [
           {
@@ -188,8 +189,26 @@ class Helper {
             result['type'] = 'request';
             callback(err, result);
           } else {
-            result['status'] = 'valid';
-            callback(err, result);
+            //check if friendId send request for user before
+            this.friend.find({ 
+              $and: [
+              {
+                from: friendId
+              }, {
+                to: userId
+              }]
+            })
+            .exec((err, request) => {
+              if(request.length > 0) {
+                result['status'] = 'invalid';
+                result['type'] = 'repeat';
+                callback(err, result);
+              } else {
+                result['status'] = 'valid';
+                callback(err, result);
+              }
+            });
+            
           }
         });
       }
@@ -286,7 +305,7 @@ class Helper {
     .populate('player1.id')
     .populate('player2.id')
     .sort({created: -1})
-    .limit(5)
+    .limit(3)
     .exec(function(err, history) {
       let result = [];
       for(let i = 0; i < history.length; i++) {
