@@ -304,7 +304,7 @@ class Helper {
     ]})
     .populate('player1.id')
     .populate('player2.id')
-    .sort({created: 1})
+    .sort({created: -1})
     .limit(3)
     .exec(function(err, history) {
       let result = [];
@@ -342,6 +342,7 @@ class Helper {
         if(data.isWinner == history.player2.id) {
           history['player2']['win']++;
         }
+        history['created'] = Date.now();
         history.save((err) => {
           callback(err, history);
         })
